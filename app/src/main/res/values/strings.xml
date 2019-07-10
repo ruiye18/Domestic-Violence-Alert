@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Domestic Violence Alert</string>
+    <string name="search_phone_number_email">Search Phone Number/Email</string>
+    <string name="report_a_person">Report a Person</string>
+    <string name="I_need_help">I Need Help!</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_Info_1">Find him/her attractive? But don\'t forget your safety! Anybody could commited domestic violence.</string>
+    <string name="welcome_Info_2">We wish to save everyone from a dangerous relationship.</string>
 </resources>
