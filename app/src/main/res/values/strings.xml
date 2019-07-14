@@ -6,4 +6,10 @@
     <string name="welcome">Welcome</string>
     <string name="welcome_Info_1">Find him/her attractive? But don\'t forget your safety! Anybody could commited domestic violence.</string>
     <string name="welcome_Info_2">We wish to save everyone from a dangerous relationship.</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="phone_number_email_address">Phone number/ Email address</string>
+    <string name="name">Name</string>
+    <string name="search_results">Search Results</string>
+    <string name="back">Back</string>
 </resources>
