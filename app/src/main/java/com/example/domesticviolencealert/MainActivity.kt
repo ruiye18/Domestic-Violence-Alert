@@ -1,12 +1,59 @@
 package com.example.domesticviolencealert
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 
-class MainActivity : AppCompatActivity() {
+import kotlinx.android.synthetic.main.activity_main.*
+
+class MainActivity : AppCompatActivity(),
+        SuspectListFragment.OnSuspectSelectedListener
+{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+
+//        fab.setOnClickListener { view ->
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+//        }
+
+        if (savedInstanceState == null) {
+            val fragment = WelcomeFragment()
+            val ft = supportFragmentManager.beginTransaction()
+            ft.add(R.id.fragment_container, fragment)
+            ft.commit()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+
+    override fun onSuspectSelected(suspect: Suspect) {
+        Log.d(Constants.TAG, "selected: ${suspect.name}")
+
+        //TODO: SuspectDetailFragment
+//
+//        val suspectFragment = SuspectDetailFragment.newInstance(suspect)
+//        val ft = supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, suspectFragment)
+//        ft.addToBackStack("detail")
+//        ft.commit()
     }
 }

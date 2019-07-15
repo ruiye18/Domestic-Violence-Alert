@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"
+            android:textSize="55sp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/welcome_info_1"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/black"
+    />
+
+    <TextView
+            android:id="@+id/welcome_info_1"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_Info_1"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/welcome_info_2"
+            android:layout_marginBottom="20dp"
+    />
+
+    <TextView
+            android:id="@+id/welcome_info_2"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome_Info_2"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/search_button"
+            android:layout_marginBottom="60dp"
+    />
+
+    <Button
+            android:id="@+id/search_button"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/search_phone_number_email"
+            android:background="@color/mainColor"
+            android:padding="25dp"
+    />
+
+    <Button
+            android:id="@+id/report_button"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_button"
+            android:layout_centerHorizontal="true"
+            android:text="@string/report_a_person"
+            android:background="@color/mainColor"
+            android:padding="25dp"
+            android:layout_margin="30dp"
+    />
+
+    <Button
+            android:id="@+id/help_button"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/report_button"
+            android:layout_centerHorizontal="true"
+            android:text="@string/I_need_help"
+            android:background="@color/helpRed"
+            android:padding="25dp"
+    />
+
+</RelativeLayout>
