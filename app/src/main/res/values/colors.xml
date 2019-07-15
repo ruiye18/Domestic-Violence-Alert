@@ -4,5 +4,12 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="mainColor">#8CD8D3</color>
-    <color name="helpRed">#F37272</color>
+    <color name="helpRed">#AC4444</color>
+    <color name="scoreProcess">#FBE571</color>
+    <color name="agreeGreen">#D3EAB6</color>
+    <color name="disagreeRed">#EC9797</color>
+    <color name="infoBackground">#A1CDCA</color>
+    <color name="infoDarkGreen">#7FA19F</color>
+    <color name="infoNumberYellow">#FFEFD7</color>
+
 </resources>

@@ -30,11 +30,25 @@
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:textSize="20sp"
-            android:layout_above="@id/search_name"
+            android:layout_above="@id/search_email"
             android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
 
-            android:hint="@string/phone_number_email_address"
+            android:hint="@string/search_phone_number"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+    />
+
+    <EditText
+            android:id="@+id/search_email"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+
+            android:hint="@string/search_email"
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
     />
@@ -44,8 +58,8 @@
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:textSize="20sp"
-            android:layout_margin="20dp"
-            android:layout_centerInParent="true"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@id/search_email"
             android:layout_centerHorizontal="true"
 
             android:hint="@string/name"

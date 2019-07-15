@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="30dp"
+                  android:layout_marginTop="250dp"
+                  android:weightSum="2"
+                  android:orientation="horizontal"
+                  android:id="@+id/tabs"
+    >
+        <android.support.design.widget.TabLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_centerInParent="true"
+                android:id="@+id/tab_main_info"
+                android:background="@color/infoBackground"
+                app:tabTextAppearance="Main Information"
+        />
+
+        <android.support.design.widget.TabLayout
+                 android:layout_width="0dp"
+                 android:layout_height="20dp"
+                 android:layout_weight="1"
+                 android:layout_centerInParent="true"
+                 android:id="@+id/tab_additional_info"
+                 android:background="@color/infoDarkGreen"
+        />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/tabs"
+        android:text="Phone Number: None"
+        android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:background="@color/infoNumberYellow"
+        android:padding="15dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="20dp"
+    />
+
+    <TextView
+            android:id="@+id/email_address"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/phone_number"
+            android:text="Email Address: None"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:background="@color/infoNumberYellow"
+            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+    />
+    
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="120dp"
+                  android:orientation="horizontal"
+                  android:weightSum="3"
+                  android:layout_below="@id/email_address"
+                  android:layout_marginTop="70dp"
+                  android:paddingHorizontal="20dp"
+    >
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:weightSum="4"
+                      android:orientation="vertical"
+                      android:layout_marginHorizontal="10dp"
+        >
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="0dp"
+                       android:layout_weight="3"
+                       android:src="@android:drawable/sym_def_app_icon"
+            />
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:text="Cut"
+                      android:textColor="@android:color/black"
+                      android:textSize="15dp"
+                      android:textAlignment="center"
+                      android:background="@color/infoBackground"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:weightSum="4"
+                      android:orientation="vertical"
+                      android:layout_marginHorizontal="10dp"
+        >
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="0dp"
+                       android:layout_weight="3"
+                       android:src="@android:drawable/sym_def_app_icon"
+            />
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:text="Bandage"
+                      android:textColor="@android:color/black"
+                      android:textSize="15dp"
+                      android:textAlignment="center"
+                      android:background="@color/infoBackground"
+            />
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:weightSum="4"
+                      android:orientation="vertical"
+                      android:layout_marginHorizontal="10dp"
+        >
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="0dp"
+                       android:layout_weight="3"
+                       tools:srcCompat="@tools:sample/avatars[0]"
+            />
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:text="Cigar Burns"
+                      android:textColor="@android:color/black"
+                      android:textSize="15dp"
+                      android:textAlignment="center"
+                      android:background="@color/infoBackground"
+
+            />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

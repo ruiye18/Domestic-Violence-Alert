@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+     >
+    <TextView
+            android:id="@+id/email_address"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Crime Record Document"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:background="@color/infoNumberYellow"
+            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+    />
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentBottom="true"
+              android:text="6 days ago"
+              android:layout_marginRight="20dp"
+    />
+
+</RelativeLayout>
