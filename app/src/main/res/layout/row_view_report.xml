@@ -5,7 +5,7 @@
         android:layout_height="80dp"
      >
     <TextView
-            android:id="@+id/email_address"
+            android:id="@+id/report_title"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Crime Record Document"

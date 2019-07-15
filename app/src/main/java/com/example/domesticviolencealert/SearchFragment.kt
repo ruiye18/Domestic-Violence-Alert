@@ -23,10 +23,10 @@ class SearchFragment : Fragment(){
         }
 
         view.search_go_button.setOnClickListener {
-            //TODO: separate phone and email text
             val phone = view.search_phone_number.text.toString()
+            val email = view.search_email.text.toString()
             val name = view.search_name.text.toString()
-            searchForResults(phone, name)
+            searchForResults(phone, email, name)
         }
 
         return view
@@ -41,8 +41,8 @@ class SearchFragment : Fragment(){
         ft.commit()
     }
 
-    private fun searchForResults(phone: String, name: String) {
-        Log.d(Constants.TAG, "Searching results for $phone and $name")
+    private fun searchForResults(phone: String, email: String, name: String) {
+        Log.d(Constants.TAG, "Searching results for $phone and $email and $name")
 
         // TODO: pass suspect results to frag
 

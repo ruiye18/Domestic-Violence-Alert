@@ -10,7 +10,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
-        SuspectListFragment.OnSuspectSelectedListener
+        SuspectListFragment.OnSuspectSelectedListener,
+        AdditionalInfoListFragment.OnReportSelectedListener
 {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,12 +49,16 @@ class MainActivity : AppCompatActivity(),
     override fun onSuspectSelected(suspect: Suspect) {
         Log.d(Constants.TAG, "selected: ${suspect.name}")
 
-        //TODO: SuspectDetailFragment
-//
-//        val suspectFragment = SuspectDetailFragment.newInstance(suspect)
-//        val ft = supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, suspectFragment)
-//        ft.addToBackStack("detail")
-//        ft.commit()
+        val suspectFragment = SuspectDetailFragment.newInstance(suspect)
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_container, suspectFragment)
+        ft.addToBackStack("detail")
+        ft.commit()
+    }
+
+    override fun onReportSelected(report: Report) {
+        Log.d(Constants.TAG, "selected: ${report.title}")
+
+        //TODO: ReportDetailFragment
     }
 }
