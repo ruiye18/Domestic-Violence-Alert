@@ -17,7 +17,7 @@
     <RelativeLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:background="@color/infoBackground"
             android:paddingBottom="20dp"
             android:paddingLeft="30dp"
