@@ -1,5 +1,12 @@
 package com.example.domesticviolencealert
 
+import android.app.Activity
+import android.content.Context
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+
+
+
 object Utils {
     fun loadSuspects(): ArrayList<Suspect> {
         val phones = arrayOf(
@@ -48,5 +55,14 @@ object Utils {
         }
 
         return suspects
+    }
+
+    fun switchFragment(context: Context, fragment: Fragment) {
+        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_container, fragment)
+        if (fragment != WelcomeFragment()) {
+            ft.addToBackStack("detail")
+        }
+        ft.commit()
     }
 }

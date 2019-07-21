@@ -51,12 +51,12 @@ class SuspectDetailFragment : Fragment(){
         }
         view.suspect_name.text = suspect?.name
 
-        //view pager
-        val sectionsPagerAdapter = SuspectInfoPagerAdapter(context!!, activity!!.supportFragmentManager, suspect!!)
-        val viewPager = view.view_pager
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs = view.tabs
-        tabs.setupWithViewPager(viewPager)
+//        //view pager
+//        val sectionsPagerAdapter = SuspectInfoPagerAdapter(context!!, activity!!.supportFragmentManager, suspect!!)
+//        val viewPager = view.view_pager
+//        viewPager.adapter = sectionsPagerAdapter
+//        val tabs = view.tabs
+//        tabs.setupWithViewPager(viewPager)
 
         //TODO: change view pager to frag container and tabs to buttons
 

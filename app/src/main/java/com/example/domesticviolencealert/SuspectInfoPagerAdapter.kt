@@ -1,11 +1,13 @@
 package com.example.domesticviolencealert
 
+import android.app.Activity
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 
-class SuspectInfoPagerAdapter (private val context: Context, fm: FragmentManager,
+class SuspectInfoPagerAdapter (private val context: Context,
+                               fm: FragmentManager,
                                private val suspect: Suspect) : FragmentPagerAdapter(fm) {
 
     override fun getCount(): Int = 2

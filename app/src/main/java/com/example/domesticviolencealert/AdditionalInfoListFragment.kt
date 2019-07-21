@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
+import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 
 private const val ARG_SUSPECT = "suspect"
 
@@ -37,12 +39,32 @@ class AdditionalInfoListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?
     ): View? {
-        val recyclerView = inflater.inflate(R.layout.fragment_addi_info_list, container, false) as RecyclerView
+        val view = inflater.inflate(R.layout.fragment_addi_info_list, container, false)
         val adapter = AdditionalInfoListAdapter(context, listener,suspect!!.reports)
+
+        val recyclerView = view.addi_info_recycler_view
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
-        return recyclerView
+
+        view.header_home_button.setOnClickListener {
+            Utils.switchFragment(context!!, WelcomeFragment())
+//            val ft = activity!!.supportFragmentManager.beginTransaction()
+//            ft.replace(R.id.fragment_container, fragment)
+//            ft.addToBackStack("detail")
+//            ft.commit()
+        }
+
+        view.tab_main_info.setOnClickListener {
+            Utils.switchFragment(context!!, MainInfoFragment.newInstance(suspect!!))
+//            val fragment = MainInfoFragment.newInstance(suspect!!)
+//            val ft = activity!!.supportFragmentManager.beginTransaction()
+//            ft.replace(R.id.fragment_container, fragment)
+//            ft.addToBackStack("detail")
+//            ft.commit()
+        }
+
+        return view
     }
 
     override fun onAttach(context: Context) {

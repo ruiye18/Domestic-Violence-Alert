@@ -25,10 +25,11 @@ class MainActivity : AppCompatActivity(),
 //        }
 
         if (savedInstanceState == null) {
-            val fragment = WelcomeFragment()
-            val ft = supportFragmentManager.beginTransaction()
-            ft.add(R.id.fragment_container, fragment)
-            ft.commit()
+            Utils.switchFragment(this, WelcomeFragment())
+//            val fragment = WelcomeFragment()
+//            val ft = supportFragmentManager.beginTransaction()
+//            ft.add(R.id.fragment_container, fragment)
+//            ft.commit()
         }
     }
 
@@ -48,12 +49,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onSuspectSelected(suspect: Suspect) {
         Log.d(Constants.TAG, "selected: ${suspect.name}")
-
-        val suspectFragment = SuspectDetailFragment.newInstance(suspect)
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, suspectFragment)
-        ft.addToBackStack("detail")
-        ft.commit()
+        Utils.switchFragment(this, MainInfoFragment.newInstance(suspect))
+//        val suspectFragment = MainInfoFragment.newInstance(suspect)
+//        val ft = supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, suspectFragment)
+//        ft.addToBackStack("detail")
+//        ft.commit()
     }
 
     override fun onReportSelected(report: Report) {

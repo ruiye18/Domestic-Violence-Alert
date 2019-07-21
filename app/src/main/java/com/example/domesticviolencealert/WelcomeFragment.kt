@@ -17,21 +17,20 @@ class WelcomeFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_welcome, container, false)
 
         view.search_button.setOnClickListener {
-            switchFragment(SearchFragment())
+            Utils.switchFragment(context!!, SearchFragment())
         }
-        //TODO: Report person + Need help
+
+        //TODO: Report person + Need help frag
 
         return view
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        val ft = activity!!.supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, fragment)
-        while(activity!!.supportFragmentManager.backStackEntryCount > 0) {
-            activity!!.supportFragmentManager.popBackStackImmediate()
-        }
-        ft.commit()
-    }
+//    private fun switchFragment(fragment: Fragment) {
+//        val ft = activity!!.supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, fragment)
+//        ft.addToBackStack("detail")
+//        ft.commit()
+//    }
 
 }
 

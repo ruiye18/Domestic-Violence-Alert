@@ -23,10 +23,10 @@ class SuspectListFragment : Fragment(){
 
         //buttons
         view.home_button.setOnClickListener {
-            switchFragment(WelcomeFragment())
+            Utils.switchFragment(context!!, WelcomeFragment())
         }
         view.back_button.setOnClickListener {
-            switchFragment(SearchFragment())
+            Utils.switchFragment(context!!, SearchFragment())
         }
 
         //recycler view
@@ -38,14 +38,12 @@ class SuspectListFragment : Fragment(){
         return view
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        val ft = activity!!.supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, fragment)
-        while(activity!!.supportFragmentManager.backStackEntryCount > 0) {
-            activity!!.supportFragmentManager.popBackStackImmediate()
-        }
-        ft.commit()
-    }
+//    private fun switchFragment(fragment: Fragment) {
+//        val ft = activity!!.supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, fragment)
+//        ft.addToBackStack("detail")
+//        ft.commit()
+//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

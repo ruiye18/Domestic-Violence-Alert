@@ -19,7 +19,7 @@ class SearchFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
         view.home_button.setOnClickListener {
-            switchFragment(WelcomeFragment())
+            Utils.switchFragment(context!!, WelcomeFragment())
         }
 
         view.search_go_button.setOnClickListener {
@@ -32,26 +32,23 @@ class SearchFragment : Fragment(){
         return view
     }
 
-    private fun switchFragment(fragment: Fragment) {
-        val ft = activity!!.supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, fragment)
-        while(activity!!.supportFragmentManager.backStackEntryCount > 0) {
-            activity!!.supportFragmentManager.popBackStackImmediate()
-        }
-        ft.commit()
-    }
+//    private fun switchFragment(fragment: Fragment) {
+//        val ft = activity!!.supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, fragment)
+//        ft.addToBackStack("detail")
+//        ft.commit()
+//    }
 
     private fun searchForResults(phone: String, email: String, name: String) {
         Log.d(Constants.TAG, "Searching results for $phone and $email and $name")
 
         // TODO: pass suspect results to frag
 
-        val ft = activity!!.supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, SuspectListFragment())
-        while(activity!!.supportFragmentManager.backStackEntryCount > 0) {
-            activity!!.supportFragmentManager.popBackStackImmediate()
-        }
-        ft.commit()
+        Utils.switchFragment(context!!, SuspectListFragment())
+//        val ft = activity!!.supportFragmentManager.beginTransaction()
+//        ft.replace(R.id.fragment_container, SuspectListFragment())
+//        ft.addToBackStack("detail")
+//        ft.commit()
     }
 
 }
