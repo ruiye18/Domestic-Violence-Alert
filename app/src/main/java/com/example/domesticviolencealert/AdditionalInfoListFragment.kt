@@ -1,6 +1,7 @@
 package com.example.domesticviolencealert
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +10,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
+import kotlinx.android.synthetic.main.fragment_addi_info_list.view.header_home_button
+import kotlinx.android.synthetic.main.fragment_addi_info_list.view.tab_main_info
+import kotlinx.android.synthetic.main.fragment_main_info.view.*
 import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 
 private const val ARG_SUSPECT = "suspect"
@@ -49,20 +54,17 @@ class AdditionalInfoListFragment : Fragment() {
 
         view.header_home_button.setOnClickListener {
             Utils.switchFragment(context!!, WelcomeFragment())
-//            val ft = activity!!.supportFragmentManager.beginTransaction()
-//            ft.replace(R.id.fragment_container, fragment)
-//            ft.addToBackStack("detail")
-//            ft.commit()
         }
 
         view.tab_main_info.setOnClickListener {
             Utils.switchFragment(context!!, MainInfoFragment.newInstance(suspect!!))
-//            val fragment = MainInfoFragment.newInstance(suspect!!)
-//            val ft = activity!!.supportFragmentManager.beginTransaction()
-//            ft.replace(R.id.fragment_container, fragment)
-//            ft.addToBackStack("detail")
-//            ft.commit()
         }
+
+        //header
+        view.score_process_text_addi.text = suspect?.score!!.toString()
+        (view.score_process_addi.layoutParams as LinearLayout.LayoutParams).weight = suspect?.score!!.toFloat()
+        val colorGreen = 255 - suspect?.score!!.toInt() * 2
+        view.score_process_color_addi.setBackgroundColor(Color.rgb(255,colorGreen,0))
 
         return view
     }

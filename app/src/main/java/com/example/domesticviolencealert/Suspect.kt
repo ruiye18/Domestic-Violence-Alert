@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Suspect (var phone: String, var email: String, var name: String, var reports: ArrayList<Report>) : Parcelable
+data class Suspect (var phone: String, var email: String, var name: String, var reports: ArrayList<Report>, var score: Int) : Parcelable
 
-//TODO: image, score, color
+//TODO: image
+//TODO: separate reports into crime record and proofs

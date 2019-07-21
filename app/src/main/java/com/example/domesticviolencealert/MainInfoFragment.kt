@@ -1,11 +1,13 @@
 package com.example.domesticviolencealert
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_main_info.view.*
 import kotlinx.android.synthetic.main.fragment_main_info.view.header_home_button
@@ -42,22 +44,19 @@ class MainInfoFragment : Fragment(){
 
         view.header_home_button.setOnClickListener {
             Utils.switchFragment(context!!, WelcomeFragment())
-//            val fragment = WelcomeFragment()
-//            val ft = activity!!.supportFragmentManager.beginTransaction()
-//            ft.replace(R.id.fragment_container, fragment)
-//            ft.addToBackStack("detail")
-//            ft.commit()
         }
 
         view.tab_additional_info.setOnClickListener {
             Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
-//            val fragment = AdditionalInfoListFragment.newInstance(suspect!!)
-//            val ft = activity!!.supportFragmentManager.beginTransaction()
-//            ft.replace(R.id.fragment_container, fragment)
-//            ft.addToBackStack("detail")
-//            ft.commit()
         }
 
+        //header
+        view.score_process_text_main.text = suspect?.score!!.toString()
+        (view.score_process_main.layoutParams as LinearLayout.LayoutParams).weight = suspect?.score!!.toFloat()
+        val colorGreen = 255 - suspect?.score!!.toInt() * 2
+        view.score_process_color_main.setBackgroundColor(Color.rgb(255,colorGreen,0))
+
+        //main info
         view.phone_number.text = context!!.getString(R.string.phone_number, suspect?.phone)
         view.email_address.text = context!!.getString(R.string.email_address, suspect?.email)
         return view

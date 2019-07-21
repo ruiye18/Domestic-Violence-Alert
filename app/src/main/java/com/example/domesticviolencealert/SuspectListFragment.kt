@@ -5,21 +5,43 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 import kotlinx.android.synthetic.main.fragment_welcome.view.*
 
+private const val ARG_SUSPECTS = "suspects"
+
 class SuspectListFragment : Fragment(){
 
     private var listener: OnSuspectSelectedListener? = null
+    lateinit private var suspects: ArrayList<Suspect>
+
+    companion object {
+        @JvmStatic
+        fun newInstance(suspects: ArrayList<Suspect>) =
+            SuspectListFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(ARG_SUSPECTS, suspects)
+                }
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            suspects = it.getParcelableArrayList(ARG_SUSPECTS)
+            Log.d(Constants.TAG, "suspects list frag with size ${suspects.size}")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_suspect_list, container, false)
-        val adapter = SuspectListAdapter(context, listener)
+        val adapter = SuspectListAdapter(suspects, context, listener)
 
         //buttons
         view.home_button.setOnClickListener {
@@ -37,13 +59,6 @@ class SuspectListFragment : Fragment(){
 
         return view
     }
-
-//    private fun switchFragment(fragment: Fragment) {
-//        val ft = activity!!.supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, fragment)
-//        ft.addToBackStack("detail")
-//        ft.commit()
-//    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

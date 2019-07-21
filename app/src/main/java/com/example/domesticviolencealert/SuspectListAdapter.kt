@@ -6,14 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 
-class SuspectListAdapter(var context: Context?, var listener: SuspectListFragment.OnSuspectSelectedListener?)
+class SuspectListAdapter(var suspects: ArrayList<Suspect>,
+    var context: Context?, var listener: SuspectListFragment.OnSuspectSelectedListener?)
     : RecyclerView.Adapter<SuspectViewHolder>() {
-
-    var suspects = ArrayList<Suspect>()
-
-    init {
-        suspects = Utils.loadSuspects()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuspectViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.row_view_suspect, parent, false)

@@ -50,11 +50,6 @@ class MainActivity : AppCompatActivity(),
     override fun onSuspectSelected(suspect: Suspect) {
         Log.d(Constants.TAG, "selected: ${suspect.name}")
         Utils.switchFragment(this, MainInfoFragment.newInstance(suspect))
-//        val suspectFragment = MainInfoFragment.newInstance(suspect)
-//        val ft = supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, suspectFragment)
-//        ft.addToBackStack("detail")
-//        ft.commit()
     }
 
     override fun onReportSelected(report: Report) {

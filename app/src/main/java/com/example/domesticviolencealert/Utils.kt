@@ -50,7 +50,7 @@ object Utils {
 
         val suspects = ArrayList<Suspect>()
         for (i in phones.indices) {
-            val suspect = Suspect(phones[i], emails[i], names[i], reports[i])
+            val suspect = Suspect(phones[i], emails[i], names[i], reports[i],50)
             suspects.add(suspect)
         }
 

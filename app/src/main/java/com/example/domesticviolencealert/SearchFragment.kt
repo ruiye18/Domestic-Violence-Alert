@@ -11,11 +11,16 @@ import kotlinx.android.synthetic.main.fragment_search.view.home_button
 import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 
 class SearchFragment : Fragment(){
+
+    private lateinit var allSuspects: ArrayList<Suspect>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         Log.d(Constants.TAG, "Enter search frag")
+
+        allSuspects = Utils.loadSuspects()
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
         view.home_button.setOnClickListener {
@@ -32,23 +37,58 @@ class SearchFragment : Fragment(){
         return view
     }
 
-//    private fun switchFragment(fragment: Fragment) {
-//        val ft = activity!!.supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, fragment)
-//        ft.addToBackStack("detail")
-//        ft.commit()
-//    }
-
     private fun searchForResults(phone: String, email: String, name: String) {
-        Log.d(Constants.TAG, "Searching results for $phone and $email and $name")
+        Log.d(Constants.TAG, "Searching results for $phone and $email and $name in ${allSuspects.size}")
 
-        // TODO: pass suspect results to frag
+        val suspects = ArrayList<Suspect>()
 
-        Utils.switchFragment(context!!, SuspectListFragment())
-//        val ft = activity!!.supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, SuspectListFragment())
-//        ft.addToBackStack("detail")
-//        ft.commit()
+        suspects.addAll(searchByPhone(phone))
+        allSuspects.removeAll(suspects)
+        suspects.addAll(searchByEmail(email))
+        allSuspects.removeAll(suspects)
+        suspects.addAll(searchByName(name))
+
+        if (phone.isEmpty() && email.isEmpty() && name.isEmpty()) {
+            suspects.addAll(allSuspects)
+        }
+
+        Utils.switchFragment(context!!, SuspectListFragment.newInstance(suspects))
+    }
+
+    private fun searchByPhone(phone: String): ArrayList<Suspect> {
+        val toReturn = ArrayList<Suspect>()
+        if (allSuspects.isNotEmpty()) {
+            for (s in allSuspects) {
+                if (s.phone == phone) {
+                    toReturn.add(s)
+                }
+            }
+        }
+        return toReturn
+    }
+
+    private fun searchByEmail(email: String): ArrayList<Suspect> {
+        val toReturn = ArrayList<Suspect>()
+        if (allSuspects.isNotEmpty()) {
+            for (s in allSuspects) {
+                if (s.email == email) {
+                    toReturn.add(s)
+                }
+            }
+        }
+        return toReturn
+    }
+
+    private fun searchByName(name: String): ArrayList<Suspect> {
+        val toReturn = ArrayList<Suspect>()
+        if (allSuspects.isNotEmpty()) {
+            for (s in allSuspects) {
+                if (s.name == name) {
+                    toReturn.add(s)
+                }
+            }
+        }
+        return toReturn
     }
 
 }

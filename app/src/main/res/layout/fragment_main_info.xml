@@ -56,16 +56,23 @@
                     android:layout_weight="3"
                     android:orientation="horizontal"
             >
-                <View
-                        android:id="@+id/score_process"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                <LinearLayout
+                        android:id="@+id/score_process_main"
+                        android:orientation="horizontal"
                         android:layout_weight="75"
-                        android:background="@color/scoreProcess"
-                />
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <View
+                            android:id="@+id/score_process_color_main"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/scoreProcess"
+                    />
+                </LinearLayout>
+
 
                 <TextView
-                        android:id="@+id/score"
+                        android:id="@+id/score_process_text_main"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="25"
