@@ -17,6 +17,26 @@
     <string name="back">Back</string>
     <string name="main_information">Main Information</string>
     <string name="additional_information">Additional Information</string>
-    <string name="phone_number">Phone Number: %s </string>
-    <string name="email_address">Email Address: %s </string>
+    <string name="phone_number">Phone: %s </string>
+    <string name="email_address">Email: %s </string>
+    <string name="login">Login</string>
+    <string name="login_description">For verifying information, we require people to login before submitting a report
+        form.
+    </string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="proofs_of_domestic_violence">Proofs of Domestic Violence</string>
+    <string name="crime_record">Crime Record</string>
+    <string name="report">Report</string>
+    <string name="need_help">Need Help</string>
+    <string name="need_help_text1">Please leave your personal information here, and we will reach you within 1-3 days.
+    </string>
+    <string name="need_help_text2">Your information is protected and will not be shared with anyone except the police.
+    </string>
+    <string name="need_help_text3">Please let us help you!
+    </string>
+    <string name="contacts">Contacts</string>
+    <string name="what_happened">What Happened</string>
+    <string name="submit">Submit</string>
 </resources>

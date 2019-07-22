@@ -136,21 +136,28 @@
                   android:orientation="horizontal"
                   android:id="@+id/tabs"
     >
-        <Button
-                android:layout_width="0dp"
-                android:layout_height="20dp"
-                android:layout_weight="1"
-                android:layout_centerInParent="true"
-                android:id="@+id/tab_main_info"
-                android:background="@color/infoDarkGreen"
-                android:text="@string/main_information"
-        />
+        <RelativeLayout android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/tab_main_info_wrap"
+        >
+            <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/tab_main_info"
+                    android:background="@color/infoDarkGreen"
+                    android:text="@string/main_information"
+            />
+
+        </RelativeLayout>
+
+
 
         <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_centerInParent="true"
                 android:id="@+id/tab_additional_info"
                 android:background="@color/infoBackground"
                 android:text="@string/additional_information"

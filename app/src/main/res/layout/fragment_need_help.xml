@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <Button
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="@string/home"
+            android:layout_margin="5dp"
+            android:id="@+id/header_home_button"
+            android:background="@color/mainColor"
+
+    />
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="50sp"
+              android:text="@string/need_help"
+              android:textColor="@android:color/black"
+              android:layout_above="@id/help_description1"
+              android:layout_centerHorizontal="true"
+    />
+
+    <TextView android:layout_width="280dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/help_description1"
+              android:layout_above="@id/help_description2"
+              android:layout_centerHorizontal="true"
+              android:text="@string/need_help_text1"
+              android:textColor="@android:color/black"
+              android:layout_margin="5dp"
+    />
+    <TextView android:layout_width="280dp"
+              android:layout_height="wrap_content"
+              android:id="@+id/help_description2"
+              android:layout_above="@id/help_description3"
+              android:layout_centerHorizontal="true"
+              android:text="@string/need_help_text2"
+              android:textColor="@android:color/black"
+              android:layout_margin="5dp"
+    />
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/help_description3"
+              android:layout_above="@id/contacts_wrapper"
+              android:layout_centerHorizontal="true"
+              android:text="@string/need_help_text3"
+              android:textColor="@android:color/black"
+              android:layout_margin="5dp"
+    />
+
+    <LinearLayout android:layout_width="320dp"
+                  android:layout_height="185dp"
+                  android:layout_centerInParent="true"
+                  android:weightSum="5"
+                  android:orientation="vertical"
+                  android:id="@+id/contacts_wrapper"
+                  android:padding="10dp"
+    >
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"
+                  android:text="@string/contacts"
+                  android:padding="6dp"
+                  android:background="@color/mainColor"
+                  android:textSize="15dp"
+        />
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+        >
+            <EditText android:layout_width="wrap_content"
+                      android:layout_height="35dp"
+                      android:text="Firstname, Lastname"
+                      android:textSize="15dp"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="@android:color/darker_gray"
+                      android:layout_above="@id/phone_number"
+                      android:id="@+id/name"
+            />
+
+            <EditText android:layout_width="wrap_content"
+                      android:layout_height="35dp"
+                      android:text="xxx-xxx-xxxx"
+                      android:textSize="15dp"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="@android:color/darker_gray"
+                      android:layout_centerInParent="true"
+                      android:id="@+id/phone_number"
+            />
+
+            <EditText android:layout_width="wrap_content"
+                      android:layout_height="35dp"
+                      android:text="email@email.com"
+                      android:textSize="15dp"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="@android:color/darker_gray"
+                      android:layout_below="@id/phone_number"
+                      android:id="@+id/email_address"
+            />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="320dp"
+                  android:layout_height="185dp"
+                  android:layout_below="@id/contacts_wrapper"
+                  android:layout_centerHorizontal="true"
+                  android:weightSum="5"
+                  android:orientation="vertical"
+                  android:id="@+id/what_happened_wrapper"
+                  android:padding="10dp"
+    >
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:textColor="@android:color/black"
+                  android:text="@string/what_happened"
+                  android:padding="6dp"
+                  android:background="@color/mainColor"
+                  android:textSize="15dp"
+        />
+
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="4"
+                  android:text= "What Happened example"
+                  android:textColor="@android:color/darker_gray"
+        />
+
+    </LinearLayout>
+
+    <Button android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/report_button"
+            android:text="@string/submit"
+            android:textColor="@android:color/black"
+            android:background="@color/mainColor"
+            android:layout_below="@id/what_happened_wrapper"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+    />
+
+
+</RelativeLayout>

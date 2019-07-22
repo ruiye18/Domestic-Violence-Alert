@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+    <Button
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="@string/home"
+            android:layout_margin="5dp"
+            android:id="@+id/header_home_button"
+            android:background="@color/mainColor"
+
+    />
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="50sp"
+              android:text="Report Form"
+              android:textColor="@android:color/black"
+              android:layout_above="@id/main_frame"
+              android:layout_centerHorizontal="true"
+    />
+
+    <LinearLayout
+            android:id="@+id/main_frame"
+            android:layout_width="320dp"
+            android:layout_height="550dp"
+            android:orientation="vertical"
+            android:weightSum="3"
+            android:layout_centerInParent="true"
+    >
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/main_info_wrapper"
+                      android:orientation="vertical"
+                      android:weightSum="5"
+        >
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:textColor="@android:color/black"
+                      android:text="@string/main_information"
+                      android:padding="6dp"
+                      android:background="@color/mainColor"
+                      android:textSize="15dp"
+            />
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:layout_marginBottom="10dp"
+            >
+
+
+                <ImageView
+                        android:layout_width="105dp"
+                        android:layout_height="105dp" tools:srcCompat="@tools:sample/avatars[1]"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/imageView"/>
+                <RelativeLayout android:layout_width="200dp"
+                                android:layout_height="105dp"
+                                android:layout_toRightOf="@id/imageView"
+
+                                android:layout_centerVertical="true"
+                >
+                    <EditText android:layout_width="wrap_content"
+                              android:layout_height="35dp"
+                              android:text="Firstname, Lastname"
+                              android:textSize="15dp"
+                              android:layout_centerHorizontal="true"
+                              android:textColor="@android:color/darker_gray"
+                              android:layout_above="@id/phone_number"
+                              android:id="@+id/name"
+                    />
+
+                    <EditText android:layout_width="wrap_content"
+                              android:layout_height="35dp"
+                              android:text="xxx-xxx-xxxx"
+                              android:textSize="15dp"
+                              android:layout_centerHorizontal="true"
+                              android:textColor="@android:color/darker_gray"
+                              android:layout_centerInParent="true"
+                              android:id="@+id/phone_number"
+                    />
+
+                    <EditText android:layout_width="wrap_content"
+                              android:layout_height="35dp"
+                              android:text="email@email.com"
+                              android:textSize="15dp"
+                              android:layout_centerHorizontal="true"
+                              android:textColor="@android:color/darker_gray"
+                              android:layout_below="@id/phone_number"
+                              android:id="@+id/email_address"
+                    />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/proofs_wrapper"
+                      android:orientation="vertical"
+                      android:weightSum="5"
+        >
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:textColor="@android:color/black"
+                      android:text="@string/proofs_of_domestic_violence"
+                      android:padding="6dp"
+                      android:background="@color/mainColor"
+                      android:textSize="15dp"
+            />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:padding="20dp"
+            >
+                <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/ic_menu_add"
+                        android:id="@+id/proof1"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                />
+                <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/ic_menu_add"
+                        android:id="@+id/proof2"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                />
+                <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/ic_menu_add"
+                        android:id="@+id/proof3"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:id="@+id/crime_record_wrapper"
+                      android:orientation="vertical"
+                      android:weightSum="5"
+        >
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="1"
+                      android:textColor="@android:color/black"
+                      android:text="@string/crime_record"
+                      android:padding="6dp"
+                      android:background="@color/mainColor"
+                      android:textSize="15dp"
+            />
+            <EditText android:layout_width="match_parent"
+                      android:layout_height="0dp"
+                      android:layout_weight="4"
+                      android:text= "Crime Records example"
+                      android:textColor="@android:color/darker_gray"
+            />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <Button android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/report_button"
+            android:text="@string/report"
+            android:textColor="@android:color/black"
+            android:background="@color/mainColor"
+            android:layout_below="@id/main_frame"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+    />
+
+
+</RelativeLayout>
