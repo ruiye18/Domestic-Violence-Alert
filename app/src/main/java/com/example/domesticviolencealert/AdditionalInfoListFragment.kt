@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +13,6 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.header_home_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.tab_main_info
-import kotlinx.android.synthetic.main.fragment_main_info.view.*
-import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 
 private const val ARG_SUSPECT = "suspect"
 
@@ -61,6 +58,7 @@ class AdditionalInfoListFragment : Fragment() {
         }
 
         //header
+        view.suspect_name.text = suspect?.name.toString()
         view.score_process_text_addi.text = suspect?.score!!.toString()
         (view.score_process_addi.layoutParams as LinearLayout.LayoutParams).weight = suspect?.score!!.toFloat()
         val colorGreen = 255 - suspect?.score!!.toInt() * 2

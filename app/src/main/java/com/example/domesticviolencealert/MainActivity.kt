@@ -19,17 +19,8 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
-
         if (savedInstanceState == null) {
             Utils.switchFragment(this, WelcomeFragment())
-//            val fragment = WelcomeFragment()
-//            val ft = supportFragmentManager.beginTransaction()
-//            ft.add(R.id.fragment_container, fragment)
-//            ft.commit()
         }
     }
 

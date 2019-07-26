@@ -39,4 +39,7 @@
     <string name="contacts">Contacts</string>
     <string name="what_happened">What Happened</string>
     <string name="submit">Submit</string>
+    <string name="need_help_message">
+        "Phone: %s \n Email: %s \n\n What Happened: %s"
+    </string>
 </resources>

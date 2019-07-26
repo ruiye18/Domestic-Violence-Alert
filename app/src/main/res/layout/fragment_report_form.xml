@@ -69,7 +69,7 @@
                 >
                     <EditText android:layout_width="wrap_content"
                               android:layout_height="35dp"
-                              android:text="Firstname, Lastname"
+                              android:hint="Firstname, Lastname"
                               android:textSize="15dp"
                               android:layout_centerHorizontal="true"
                               android:textColor="@android:color/darker_gray"
@@ -79,7 +79,7 @@
 
                     <EditText android:layout_width="wrap_content"
                               android:layout_height="35dp"
-                              android:text="xxx-xxx-xxxx"
+                              android:hint="xxx-xxx-xxxx"
                               android:textSize="15dp"
                               android:layout_centerHorizontal="true"
                               android:textColor="@android:color/darker_gray"
@@ -89,7 +89,7 @@
 
                     <EditText android:layout_width="wrap_content"
                               android:layout_height="35dp"
-                              android:text="email@email.com"
+                              android:hint="email@email.com"
                               android:textSize="15dp"
                               android:layout_centerHorizontal="true"
                               android:textColor="@android:color/darker_gray"

@@ -20,17 +20,18 @@ class WelcomeFragment : Fragment(){
             Utils.switchFragment(context!!, SearchFragment())
         }
 
-        //TODO: Report person + Need help frag
+        view.report_button.setOnClickListener {
+            Utils.switchFragment(context!!, ReportSuspectFragment())
+        }
+
+        //TODO: Login
+
+        view.help_button.setOnClickListener {
+            Utils.switchFragment(context!!, HelpFragment())
+        }
 
         return view
     }
-
-//    private fun switchFragment(fragment: Fragment) {
-//        val ft = activity!!.supportFragmentManager.beginTransaction()
-//        ft.replace(R.id.fragment_container, fragment)
-//        ft.addToBackStack("detail")
-//        ft.commit()
-//    }
 
 }
 

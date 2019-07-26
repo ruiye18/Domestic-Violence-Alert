@@ -1,5 +1,6 @@
 package com.example.domesticviolencealert
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,15 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_main_info.view.*
 import kotlinx.android.synthetic.main.fragment_main_info.view.header_home_button
 import kotlinx.android.synthetic.main.fragment_main_info.view.tab_additional_info
 
 private const val ARG_SUSPECT = "suspect"
 
-class MainInfoFragment : Fragment(){
+class MainInfoFragment : Fragment(), GetProofBitmapsTask.ProofConsumer{
     private var suspect: Suspect? = null
+    private var proofsBitmap = ArrayList<Bitmap>()
 
     companion object {
         @JvmStatic
@@ -33,6 +34,11 @@ class MainInfoFragment : Fragment(){
         arguments?.let {
             suspect = it.getParcelable(ARG_SUSPECT)
             Log.d(Constants.TAG, "Enter ${suspect?.name} main info frag ")
+            if (suspect?.proofsImages?.isNotEmpty()!!) {
+                for (url in suspect?.proofsImages!!) {
+                    GetProofBitmapsTask(this).execute(url)
+                }
+            }
         }
     }
 
@@ -51,6 +57,7 @@ class MainInfoFragment : Fragment(){
         }
 
         //header
+        view.suspect_name.text = suspect?.name.toString()
         view.score_process_text_main.text = suspect?.score!!.toString()
         (view.score_process_main.layoutParams as LinearLayout.LayoutParams).weight = suspect?.score!!.toFloat()
         val colorGreen = 255 - suspect?.score!!.toInt() * 2
@@ -59,7 +66,20 @@ class MainInfoFragment : Fragment(){
         //main info
         view.phone_number.text = context!!.getString(R.string.phone_number, suspect?.phone)
         view.email_address.text = context!!.getString(R.string.email_address, suspect?.email)
+
         return view
     }
+
+    override fun onProofLoaded(bitmap: Bitmap?) {
+        proofsBitmap.add(bitmap!!)
+        when(proofsBitmap.size) {
+            1 ->  view!!.proof_image_1.setImageBitmap(bitmap)
+            2 ->  view!!.proof_image_2.setImageBitmap(bitmap)
+            3 ->  view!!.proof_image_3.setImageBitmap(bitmap)
+        }
+
+        //TODO: choose from gallery + database
+    }
+
 
 }

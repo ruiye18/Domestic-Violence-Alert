@@ -2,13 +2,16 @@ package com.example.domesticviolencealert
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-
+import android.util.Log
 
 
 object Utils {
-    fun loadSuspects(): ArrayList<Suspect> {
+    var suspects: ArrayList<Suspect>
+
+    init {
         val phones = arrayOf(
             "0000000000",
             "1111111111",
@@ -48,14 +51,19 @@ object Utils {
             report3
         )
 
-        val suspects = ArrayList<Suspect>()
+        val proofImages = ArrayList<String>()
+        proofImages.add("https://thefga.org/wp-content/uploads/2017/10/cut-red-tape.jpg")
+        proofImages.add("https://thefga.org/wp-content/uploads/2017/10/cut-red-tape.jpg")
+        proofImages.add("https://thefga.org/wp-content/uploads/2017/10/cut-red-tape.jpg")
+
+        suspects = ArrayList<Suspect>()
         for (i in phones.indices) {
-            val suspect = Suspect(phones[i], emails[i], names[i], reports[i],50)
+            val suspect = Suspect(phones[i], emails[i], names[i], proofImages, reports[i],25)
             suspects.add(suspect)
         }
-
-        return suspects
     }
+
+    fun loadSuspects(): ArrayList<Suspect> = suspects
 
     fun switchFragment(context: Context, fragment: Fragment) {
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
@@ -64,5 +72,10 @@ object Utils {
             ft.addToBackStack("detail")
         }
         ft.commit()
+    }
+
+    fun addSuspect(suspect: Suspect) {
+        suspects.add(0, suspect)
+        Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
     }
 }
