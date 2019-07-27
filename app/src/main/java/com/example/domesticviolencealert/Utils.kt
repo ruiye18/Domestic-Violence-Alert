@@ -1,17 +1,63 @@
 package com.example.domesticviolencealert
 
-import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.google.firebase.firestore.*
 
 
 object Utils {
-    var suspects: ArrayList<Suspect>
+    private val suspects = ArrayList<Suspect>()
+
+    private val suspectsRef = FirebaseFirestore
+        .getInstance()
+        .collection(Constants.SUSPECTS_COLLECTION)
 
     init {
+       suspectsRef
+           .orderBy(Suspect.LAST_TOUCHED_KEY, Query.Direction.ASCENDING)
+           .addSnapshotListener { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
+               if (exception != null) {
+                   Log.e(Constants.TAG, "listen error: $exception")
+                   return@addSnapshotListener
+               }
+               for (docChange in snapshot!!.documentChanges) {
+                   val suspect = Suspect.fromSnapshot(docChange.document)
+                   when (docChange.type) {
+                       DocumentChange.Type.ADDED -> {
+                           suspects.add(0, suspect)
+                           Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
+                       }
+                       DocumentChange.Type.REMOVED -> {
+                           val pos = suspects.indexOfFirst { suspect.id == it.id }
+                           suspects.removeAt(pos)
+                       }
+                       DocumentChange.Type.MODIFIED -> {
+                           val pos = suspects.indexOfFirst { suspect.id == it.id }
+                           suspects[pos] = suspect
+                       }
+                   }
+               }
+           }
+    }
+
+    fun loadSuspects(): ArrayList<Suspect> = suspects
+
+    fun switchFragment(context: Context, fragment: Fragment) {
+        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_container, fragment)
+        if (fragment != WelcomeFragment()) {
+            ft.addToBackStack("detail")
+        }
+        ft.commit()
+    }
+
+    fun addSuspect(suspect: Suspect) {
+        suspectsRef.add(suspect)
+    }
+
+    private fun localInit() {
         val phones = arrayOf(
             "0000000000",
             "1111111111",
@@ -56,26 +102,10 @@ object Utils {
         proofImages.add("https://thefga.org/wp-content/uploads/2017/10/cut-red-tape.jpg")
         proofImages.add("https://thefga.org/wp-content/uploads/2017/10/cut-red-tape.jpg")
 
-        suspects = ArrayList<Suspect>()
+        val localSuspects = ArrayList<Suspect>()
         for (i in phones.indices) {
             val suspect = Suspect(phones[i], emails[i], names[i], proofImages, reports[i],25)
-            suspects.add(suspect)
+            localSuspects.add(suspect)
         }
-    }
-
-    fun loadSuspects(): ArrayList<Suspect> = suspects
-
-    fun switchFragment(context: Context, fragment: Fragment) {
-        val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container, fragment)
-        if (fragment != WelcomeFragment()) {
-            ft.addToBackStack("detail")
-        }
-        ft.commit()
-    }
-
-    fun addSuspect(suspect: Suspect) {
-        suspects.add(0, suspect)
-        Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
     }
 }

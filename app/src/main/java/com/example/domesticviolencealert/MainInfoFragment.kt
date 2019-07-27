@@ -67,6 +67,8 @@ class MainInfoFragment : Fragment(), GetProofBitmapsTask.ProofConsumer{
         view.phone_number.text = context!!.getString(R.string.phone_number, suspect?.phone)
         view.email_address.text = context!!.getString(R.string.email_address, suspect?.email)
 
+        //TODO: agree/disagree
+
         return view
     }
 
@@ -77,8 +79,6 @@ class MainInfoFragment : Fragment(), GetProofBitmapsTask.ProofConsumer{
             2 ->  view!!.proof_image_2.setImageBitmap(bitmap)
             3 ->  view!!.proof_image_3.setImageBitmap(bitmap)
         }
-
-        //TODO: choose from gallery + database
     }
 
 

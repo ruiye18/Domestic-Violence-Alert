@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "454754158336",
+    "firebase_url": "https://domesticviolencealert-74019.firebaseio.com",
+    "project_id": "domesticviolencealert-74019",
+    "storage_bucket": "domesticviolencealert-74019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454754158336:android:2a18046bcf9e0e2c",
+        "android_client_info": {
+          "package_name": "com.example.domesticviolencealert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454754158336-c7f2omblcf5gqg5r7cru6f6jnaonsr3k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1pRU4IF1eiFnNq9WUeji7AmyfdLsKwoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454754158336-c7f2omblcf5gqg5r7cru6f6jnaonsr3k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

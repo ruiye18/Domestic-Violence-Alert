@@ -24,8 +24,6 @@ class WelcomeFragment : Fragment(){
             Utils.switchFragment(context!!, ReportSuspectFragment())
         }
 
-        //TODO: Login
-
         view.help_button.setOnClickListener {
             Utils.switchFragment(context!!, HelpFragment())
         }

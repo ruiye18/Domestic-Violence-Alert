@@ -16,6 +16,9 @@ class HelpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_need_help, container, false)
+        view.header_home_button.setOnClickListener {
+            Utils.switchFragment(context!!, WelcomeFragment())
+        }
         view.report_button.setOnClickListener {
             sendEmail()
         }

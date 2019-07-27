@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.fragment_search.view.home_button
-import kotlinx.android.synthetic.main.fragment_suspect_list.view.*
 
 class SearchFragment : Fragment(){
 
