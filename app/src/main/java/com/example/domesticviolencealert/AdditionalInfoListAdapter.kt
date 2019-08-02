@@ -24,4 +24,9 @@ class AdditionalInfoListAdapter (var context: Context?, var listener: Additional
         val doc = reports[adapterPosition]
         listener?.onReportSelected(doc)
     }
+
+    fun add(report: Report) {
+        reports.add(0, report)
+        notifyItemInserted(0)
+    }
 }

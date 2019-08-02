@@ -42,4 +42,5 @@
     <string name="need_help_message">
         "Phone: %s \n Email: %s \n\n What Happened: %s"
     </string>
+    <string name="sign_out">Sign Out</string>
 </resources>

@@ -70,8 +70,6 @@ class ReportSuspectFragment : Fragment(),
             showPictureDialog()
         }
 
-        //TODO: remove records part
-
         view.report_button.setOnClickListener {
             //main info
             val nameText = view.name.text.toString()

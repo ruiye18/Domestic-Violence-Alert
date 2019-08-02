@@ -9,39 +9,78 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
+import com.firebase.ui.auth.AuthUI
+
 
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         SuspectListFragment.OnSuspectSelectedListener,
-        AdditionalInfoListFragment.OnReportSelectedListener
+        AdditionalInfoListFragment.OnReportSelectedListener,
+        SplashFragment.OnLoginButtonPressedListener
 {
 
     private val WRITE_EXTERNAL_STORAGE_PERMISSION = 2
+    private val RC_SIGN_IN = 1
+
     private val auth = FirebaseAuth.getInstance()
+    lateinit var authStateListener: FirebaseAuth.AuthStateListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         checkPermissions()
+        initializeListeners()
+    }
 
-        //TODO: phone auth
-        val user = auth.currentUser
-        if (user != null) {
-            Utils.switchFragment(this, WelcomeFragment())
-        } else {
-            signInAnonymously()
+    override fun onStart() {
+        super.onStart()
+        auth.addAuthStateListener(authStateListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        auth.removeAuthStateListener(authStateListener)
+    }
+
+    private fun initializeListeners() {
+        authStateListener = FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
+            val user = auth.currentUser
+            Log.d(Constants.TAG, "In auth listener, user = $user")
+            if (user != null) {
+                Log.d(Constants.TAG, "UID: ${user.uid}")
+                Log.d(Constants.TAG, "Phone: ${user.phoneNumber}")
+                Utils.switchFragment(this, WelcomeFragment())
+            } else {
+                Utils.switchFragment(this, SplashFragment())
+            }
         }
     }
 
-    private fun signInAnonymously() {
-        auth.signInAnonymously().addOnSuccessListener(this) {
-            Utils.switchFragment(this, WelcomeFragment())
-        }.addOnFailureListener(this) { e ->
-            Log.e(Constants.TAG, "signInAnonymously:FAILURE", e)
-        }
+    override fun onLoginButtonPressed() {
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.PhoneBuilder().build()
+            )
+
+        val loginIntent =  AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+
+        startActivityForResult(loginIntent, RC_SIGN_IN)
     }
+
+
+//
+//    private fun signInAnonymously() {
+//        auth.signInAnonymously().addOnSuccessListener(this) {
+//            Utils.switchFragment(this, WelcomeFragment())
+//        }.addOnFailureListener(this) { e ->
+//            Log.e(Constants.TAG, "signInAnonymously:FAILURE", e)
+//        }
+//    }
 
     private fun checkPermissions() {
         if (ContextCompat
@@ -65,7 +104,10 @@ class MainActivity : AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings ->{
+                auth.signOut()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -79,7 +121,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun onReportSelected(report: Report) {
         Log.d(Constants.TAG, "selected: ${report.title}")
-
-        //TODO: ReportDetailFragment
+        Utils.switchFragment(this, ReportDetailFragment.newInstance(report))
     }
 }

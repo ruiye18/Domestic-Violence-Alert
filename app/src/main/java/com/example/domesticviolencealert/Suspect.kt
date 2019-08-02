@@ -28,4 +28,3 @@ data class Suspect (var phone: String = "",
     }
 }
 
-//TODO: separate reports into crime record and proofs

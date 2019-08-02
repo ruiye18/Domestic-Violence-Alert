@@ -13,12 +13,15 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.header_home_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.tab_main_info
+import android.support.v7.app.AlertDialog
+
 
 private const val ARG_SUSPECT = "suspect"
 
 class AdditionalInfoListFragment : Fragment() {
     private var suspect: Suspect? = null
     private var listener: OnReportSelectedListener? = null
+    lateinit var adapter: AdditionalInfoListAdapter
 
     companion object {
         @JvmStatic
@@ -42,7 +45,7 @@ class AdditionalInfoListFragment : Fragment() {
                               savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_addi_info_list, container, false)
-        val adapter = AdditionalInfoListAdapter(context, listener,suspect!!.reports)
+        adapter = AdditionalInfoListAdapter(context, listener,suspect!!.reports)
 
         val recyclerView = view.addi_info_recycler_view
         recyclerView.adapter = adapter
@@ -64,7 +67,26 @@ class AdditionalInfoListFragment : Fragment() {
         val colorGreen = 255 - suspect?.score!!.toInt() * 2
         view.score_process_color_addi.setBackgroundColor(Color.rgb(255,colorGreen,0))
 
+        //fab
+        view.add_report_fab.setOnClickListener{
+            showAddReportDialog()
+        }
+
         return view
+    }
+
+    private fun showAddReportDialog() {
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("Add a report")
+
+        builder.setPositiveButton(android.R.string.ok) { _, _ ->
+           val toAdd = Report("", "", false)
+            adapter.add(toAdd)
+            //TODO: switch to add report fragment
+        }
+        builder.setNegativeButton(android.R.string.cancel, null)
+
+        builder.show()
     }
 
     override fun onAttach(context: Context) {
