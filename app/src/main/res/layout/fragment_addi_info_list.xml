@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_height="match_parent"
         android:layout_width="match_parent">
     <Button
             android:layout_width="100dp"
@@ -33,6 +33,16 @@
                 android:paddingTop="15dp"
         />
 
+        <Button android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:id="@+id/add_report_button"
+                android:layout_below="@id/suspect_icon"
+                android:text="Add Report"
+                android:background="@color/infoNumberYellow"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="7dp"
+        />
+
         <LinearLayout
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
@@ -51,40 +61,39 @@
                     android:textSize="30dp"
             />
 
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:weightSum="100"
+                    android:orientation="horizontal"
+                    android:background="@drawable/border"
+            >
                 <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="3"
-                        android:weightSum="100"
+                        android:id="@+id/score_process_addi"
                         android:orientation="horizontal"
-                        android:background="@drawable/border"
-                >
-                    <LinearLayout
-                            android:id="@+id/score_process_addi"
-                            android:orientation="horizontal"
-                            android:layout_weight="75"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content">
-                        <View
-                                android:id="@+id/score_process_color_addi"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@color/scoreProcess"
-                        />
-                    </LinearLayout>
-
-
-                    <TextView
-                            android:id="@+id/score_process_text_addi"
-                            android:layout_width="0dp"
+                        android:layout_weight="75"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content">
+                    <View
+                            android:id="@+id/score_process_color_addi"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="25"
-                            android:text="75"
-                            android:gravity="center"
+                            android:background="@color/scoreProcess"
                     />
-
                 </LinearLayout>
 
+
+                <TextView
+                        android:id="@+id/score_process_text_addi"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="25"
+                        android:text="75"
+                        android:gravity="center"
+                />
+
+            </LinearLayout>
 
 
             <LinearLayout
@@ -95,6 +104,7 @@
                     android:weightSum="2"
                     android:layout_gravity="right"
             >
+
                 <Button
                         android:id="@+id/agree_button"
                         android:layout_width="0dp"
@@ -157,8 +167,6 @@
 
         </RelativeLayout>
 
-
-
         <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -178,8 +186,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp">
-
-
     </android.support.v7.widget.RecyclerView>
+
 
 </RelativeLayout>
