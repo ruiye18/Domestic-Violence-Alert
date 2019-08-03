@@ -63,7 +63,7 @@
                   android:layout_weight="1"
                   android:textColor="@android:color/black"
                   android:text="@string/contacts"
-                  android:padding="6dp"
+                  android:padding="4dp"
                   android:background="@color/mainColor"
                   android:textSize="15dp"
         />
@@ -71,6 +71,7 @@
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="4"
+                        android:background="@drawable/border"
         >
             <EditText android:layout_width="wrap_content"
                       android:layout_height="35dp"
@@ -120,7 +121,7 @@
                   android:layout_weight="1"
                   android:textColor="@android:color/black"
                   android:text="@string/what_happened"
-                  android:padding="6dp"
+                  android:padding="4dp"
                   android:background="@color/mainColor"
                   android:textSize="15dp"
         />
@@ -130,7 +131,8 @@
                   android:layout_weight="4"
                   android:hint="What Happened example"
                   android:textColor="@android:color/darker_gray"
-                  android:id="@+id/what_happened"/>
+                  android:id="@+id/what_happened"
+                  android:background="@drawable/border"/>
 
     </LinearLayout>
 

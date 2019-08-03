@@ -33,6 +33,7 @@
             android:layout_above="@id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/border"
 
             android:hint="@string/username"
             android:textAlignment="center"
@@ -47,6 +48,7 @@
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
+            android:background="@drawable/border"
 
             android:hint="@string/password"
             android:textAlignment="center"
@@ -61,6 +63,7 @@
             android:layout_marginBottom="20dp"
             android:layout_below="@id/password"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/border"
 
             android:hint="Email@email.com"
             android:textAlignment="center"
