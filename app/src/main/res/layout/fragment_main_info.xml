@@ -30,6 +30,7 @@
                 android:layout_height="100dp"
                 android:src="@android:drawable/sym_def_app_icon"
                 android:foregroundGravity="center"
+                android:paddingTop="15dp"
         />
 
         <LinearLayout
@@ -55,13 +56,15 @@
                     android:weightSum="100"
                     android:layout_weight="3"
                     android:orientation="horizontal"
+                    android:background="@drawable/border"
             >
                 <LinearLayout
                         android:id="@+id/score_process_main"
                         android:orientation="horizontal"
                         android:layout_weight="75"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                >
                     <View
                             android:id="@+id/score_process_color_main"
                             android:layout_width="match_parent"

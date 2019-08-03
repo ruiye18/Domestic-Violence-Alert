@@ -30,6 +30,7 @@
                 android:layout_height="100dp"
                 android:src="@android:drawable/sym_def_app_icon"
                 android:foregroundGravity="center"
+                android:paddingTop="15dp"
         />
 
         <LinearLayout
@@ -49,38 +50,42 @@
                     android:padding="5dp"
                     android:textSize="30dp"
             />
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:weightSum="100"
-                    android:layout_weight="3"
-                    android:orientation="horizontal"
-            >
+
                 <LinearLayout
-                        android:id="@+id/score_process_addi"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:weightSum="100"
                         android:orientation="horizontal"
-                        android:layout_weight="75"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-                    <View
-                            android:id="@+id/score_process_color_addi"
-                            android:layout_width="match_parent"
+                        android:background="@drawable/border"
+                >
+                    <LinearLayout
+                            android:id="@+id/score_process_addi"
+                            android:orientation="horizontal"
+                            android:layout_weight="75"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+                        <View
+                                android:id="@+id/score_process_color_addi"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/scoreProcess"
+                        />
+                    </LinearLayout>
+
+
+                    <TextView
+                            android:id="@+id/score_process_text_addi"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:background="@color/scoreProcess"
+                            android:layout_weight="25"
+                            android:text="75"
+                            android:gravity="center"
                     />
+
                 </LinearLayout>
 
 
-                <TextView
-                        android:id="@+id/score_process_text_addi"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="25"
-                        android:text="75"
-                        android:gravity="center"
-                />
-
-            </LinearLayout>
 
             <LinearLayout
                     android:layout_width="120dp"
@@ -172,7 +177,7 @@
             android:padding="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp">
+            android:layout_marginTop="20dp">
 
 
     </android.support.v7.widget.RecyclerView>
@@ -184,6 +189,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:src="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
     />
