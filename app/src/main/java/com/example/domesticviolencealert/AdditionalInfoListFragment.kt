@@ -67,26 +67,12 @@ class AdditionalInfoListFragment : Fragment() {
         val colorGreen = 255 - suspect?.score!!.toInt() * 2
         view.score_process_color_addi.setBackgroundColor(Color.rgb(255,colorGreen,0))
 
-        //fab
-        view.add_report_fab.setOnClickListener{
-            showAddReportDialog()
+        //add report
+        view.add_report_button.setOnClickListener{
+            Utils.switchFragment(context!!, AddReportFragment.newInstance(suspect!!))
         }
 
         return view
-    }
-
-    private fun showAddReportDialog() {
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Add a report")
-
-        builder.setPositiveButton(android.R.string.ok) { _, _ ->
-           val toAdd = Report("", "", false)
-            adapter.add(toAdd)
-            //TODO: switch to add report fragment
-        }
-        builder.setNegativeButton(android.R.string.cancel, null)
-
-        builder.show()
     }
 
     override fun onAttach(context: Context) {

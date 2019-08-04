@@ -2,8 +2,10 @@ package com.example.domesticviolencealert
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.firebase.firestore.*
 
 class AdditionalInfoListAdapter (var context: Context?, var listener: AdditionalInfoListFragment.OnReportSelectedListener?,
                                  var reports: ArrayList<Report>) : RecyclerView.Adapter<ReportViewHolder>() {
@@ -25,8 +27,5 @@ class AdditionalInfoListAdapter (var context: Context?, var listener: Additional
         listener?.onReportSelected(doc)
     }
 
-    fun add(report: Report) {
-        reports.add(0, report)
-        notifyItemInserted(0)
-    }
+
 }

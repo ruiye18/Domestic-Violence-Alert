@@ -14,89 +14,118 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.fragment_add_report.view.*
 import kotlinx.android.synthetic.main.fragment_report_form.view.*
-import kotlinx.android.synthetic.main.fragment_report_form.view.email_address
-import kotlinx.android.synthetic.main.fragment_report_form.view.header_home_button
-import kotlinx.android.synthetic.main.fragment_report_form.view.phone_number
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import com.google.android.gms.tasks.Continuation
-import com.google.common.math.IntMath.mod
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
+private const val ARG_SUSPECT = "suspect"
 
-class ReportSuspectFragment : Fragment(),
-    UploadProofTask.UploadConsumer{
-
+class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
+    private var suspect: Suspect? = null
     private var currentPhotoPath = ""
-
-    private var proofsUrl = ArrayList<String>()
-    private var proofsBitmap = ArrayList<Bitmap>()
-    private var clickedOnProof = -1
-
+    lateinit private var currentBitmap : Bitmap
 
     private val storageRef = FirebaseStorage
         .getInstance()
         .reference
-        .child("images")
+        .child("reportImages")
+
+
+    var suspects = ArrayList<Suspect>()
+    val suspectsRef = FirebaseFirestore
+        .getInstance()
+        .collection(Constants.SUSPECTS_COLLECTION)
+
+    private fun loadSuspects(): ArrayList<Suspect> {
+        val suspects = ArrayList<Suspect>()
+        suspectsRef
+            .orderBy(Suspect.LAST_TOUCHED_KEY, Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
+                if (exception != null) {
+                    Log.e(Constants.TAG, "listen error: $exception")
+                    return@addSnapshotListener
+                }
+                for (docChange in snapshot!!.documentChanges) {
+                    val suspect = Suspect.fromSnapshot(docChange.document)
+                    when (docChange.type) {
+                        DocumentChange.Type.ADDED -> {
+                            suspects.add(0, suspect)
+                            Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val pos = suspects.indexOfFirst { suspect.id == it.id }
+                            suspects[pos] = suspect
+                        }
+                    }
+                }
+            }
+        return suspects
+    }
+
+
+    companion object {
+        @JvmStatic
+        fun newInstance(suspect: Suspect) =
+            AddReportFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_SUSPECT, suspect)
+                }
+            }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            suspect = it.getParcelable(ARG_SUSPECT)
+            loadSuspects()
+            Log.d(Constants.TAG, "Enter add report for ${suspect?.name} in suspects ${suspects.size} ")
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_report_form, container, false)
-        view.header_home_button.setOnClickListener {
-            Utils.switchFragment(context!!, WelcomeFragment())
-        }
+        Log.d(Constants.TAG, "Enter welcome frag")
+        val view = inflater.inflate(R.layout.fragment_add_report, container, false)
 
-        view.proof1.setOnClickListener {
-            clickedOnProof = 0
-            showPictureDialog()
-        }
-        view.proof2.setOnClickListener {
-            clickedOnProof = 1
-            showPictureDialog()
-        }
-        view.proof3.setOnClickListener {
-            clickedOnProof = 2
+        view.add_report_image_button.setOnClickListener {
             showPictureDialog()
         }
 
-        view.report_button.setOnClickListener {
-            //main info
-            val nameText = view.name.text.toString()
-            val phoneText = view.phone_number.text.toString()
-            val emailText = view.email_address.text.toString()
-
-            //proof images
-            for(bitmap in proofsBitmap) {
-                storageAdd(nameText, phoneText, emailText, bitmap)
-            }
+        view.back_button.setOnClickListener {
+            Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
         }
 
+        view.submit_button.setOnClickListener {
+            storageAdd()
+        }
         return view
     }
 
-
-    private fun storageAdd(name: String, phone: String, email: String, bitmap: Bitmap?) {
+    private fun storageAdd() {
         val baos = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        currentBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
         val id = Math.abs(Random.nextLong()).toString()
 
         var uploadTask = storageRef.child(id).putBytes(data)
         uploadTask.addOnFailureListener {
-            Log.d(Constants.TAG, "Image upload failed: $id")
+            Log.d(Constants.TAG, "Report Image upload failed: $id")
         }.addOnSuccessListener {
-            Log.d(Constants.TAG, "Image upload succeeded: $id")
+            Log.d(Constants.TAG, "Report Image upload succeeded: $id")
         }
 
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
@@ -109,24 +138,23 @@ class ReportSuspectFragment : Fragment(),
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result
-                proofsUrl.add(downloadUri.toString())
-                Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
-
-                //TODO: loading ?
-                if (proofsUrl.size == proofsBitmap.size) {
-                    val newSuspect = Suspect(phone, email, name, proofsUrl, ArrayList<Report>(), 50)
-                    Utils.addSuspect(newSuspect)
-                    Utils.switchFragment(context!!, MainInfoFragment.newInstance(newSuspect))
-                }
+                Log.d(Constants.TAG, "Report Image download URL succeeded: $downloadUri")
+               addReport(downloadUri.toString())
             } else {
                 Log.d(Constants.TAG, "Image download URL failed")
             }
         }
     }
 
-    private fun showPictureDialog() {
-        Log.d(Constants.TAG, "Adding proofs to $clickedOnProof")
+    private fun addReport(uri:String) {
+        val title = view!!.report_title.text.toString()
+        val info = view!!.info_body.text.toString()
+        suspect?.reports?.add(0, Report(title, info, false, uri))
+        suspectsRef.document(suspect!!.id).set(suspect as Any)
+        Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
+    }
 
+    private fun showPictureDialog() {
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle("Upload Proofs")
         builder.setMessage("Note: only three proofs are allowed\nPlease choose the most intuitive ones")
@@ -214,19 +242,8 @@ class ReportSuspectFragment : Fragment(),
 
 
     override fun onUploadCompleted(bitmap: Bitmap) {
-        if (clickedOnProof >= proofsBitmap.size) {
-            clickedOnProof = proofsBitmap.size
-            proofsBitmap.add(clickedOnProof, bitmap)
-        } else {
-            proofsBitmap[clickedOnProof] = bitmap
-        }
-
-        when(clickedOnProof) {
-            0 ->  view!!.proof1.setImageBitmap(bitmap)
-            1 ->  view!!.proof2.setImageBitmap(bitmap)
-            2 ->  view!!.proof3.setImageBitmap(bitmap)
-        }
+        currentBitmap = bitmap
+       view!!.report_image.setImageBitmap(bitmap)
     }
 
-//TODO: attach name to proofs
 }

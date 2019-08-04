@@ -8,41 +8,37 @@ import com.google.firebase.firestore.*
 
 
 object Utils {
-    private val suspects = ArrayList<Suspect>()
+    val suspects = ArrayList<Suspect>()
 
-    private val suspectsRef = FirebaseFirestore
+    val suspectsRef = FirebaseFirestore
         .getInstance()
         .collection(Constants.SUSPECTS_COLLECTION)
 
     init {
-       suspectsRef
-           .orderBy(Suspect.LAST_TOUCHED_KEY, Query.Direction.ASCENDING)
-           .addSnapshotListener { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
-               if (exception != null) {
-                   Log.e(Constants.TAG, "listen error: $exception")
-                   return@addSnapshotListener
-               }
-               for (docChange in snapshot!!.documentChanges) {
-                   val suspect = Suspect.fromSnapshot(docChange.document)
-                   when (docChange.type) {
-                       DocumentChange.Type.ADDED -> {
-                           suspects.add(0, suspect)
-                           Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
-                       }
-                       DocumentChange.Type.REMOVED -> {
-                           val pos = suspects.indexOfFirst { suspect.id == it.id }
-                           suspects.removeAt(pos)
-                       }
-                       DocumentChange.Type.MODIFIED -> {
-                           val pos = suspects.indexOfFirst { suspect.id == it.id }
-                           suspects[pos] = suspect
-                       }
-                   }
-               }
-           }
+      loadSuspects()
     }
 
-    fun loadSuspects(): ArrayList<Suspect> = suspects
+    fun loadSuspects(): ArrayList<Suspect> {
+        val suspects = ArrayList<Suspect>()
+        suspectsRef
+            .orderBy(Suspect.LAST_TOUCHED_KEY, Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot: QuerySnapshot?, exception: FirebaseFirestoreException? ->
+                if (exception != null) {
+                    Log.e(Constants.TAG, "listen error: $exception")
+                    return@addSnapshotListener
+                }
+                for (docChange in snapshot!!.documentChanges) {
+                    val suspect = Suspect.fromSnapshot(docChange.document)
+                    when (docChange.type) {
+                        DocumentChange.Type.ADDED -> {
+                            suspects.add(0, suspect)
+                            Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
+                        }
+                    }
+                }
+            }
+        return suspects
+    }
 
     fun switchFragment(context: Context, fragment: Fragment) {
         val ft = (context as AppCompatActivity).supportFragmentManager.beginTransaction()
@@ -55,6 +51,11 @@ object Utils {
 
     fun addSuspect(suspect: Suspect) {
         suspectsRef.add(suspect)
+    }
+
+    fun addReport(list: ArrayList<Suspect>, current: Suspect, report: Report) {
+        val pos = list.indexOfFirst { current.id == it.id }
+        Log.d(Constants.TAG, "adding report to position ${pos} and id ${current.id} in ${list.size}")
     }
 
 //    private fun localInit() {

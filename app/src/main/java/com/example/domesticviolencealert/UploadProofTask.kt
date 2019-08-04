@@ -24,7 +24,7 @@ class UploadProofTask(private val localPath: String,
 
 
     override fun doInBackground(vararg p0: Void?): Bitmap? {
-        val ratio = 2
+        val ratio = 1
         return rotateAndScaleByRatio(context, localPath, ratio)
     }
 

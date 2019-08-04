@@ -43,5 +43,4 @@
         "Phone: %s \n Email: %s \n\n What Happened: %s"
     </string>
     <string name="sign_out">Sign Out</string>
-    <string name="name">Name</string>
 </resources>

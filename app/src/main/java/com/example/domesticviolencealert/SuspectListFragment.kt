@@ -50,7 +50,7 @@ class SuspectListFragment : Fragment(){
         }
 
         //recycler view
-        val recyclerView = view.recycler_view
+        val recyclerView = view.report_image
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)

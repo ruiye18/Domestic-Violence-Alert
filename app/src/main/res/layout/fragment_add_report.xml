@@ -12,37 +12,42 @@
             android:background="@color/mainColor"
     />
 
-    <TextView
+    <EditText
             android:id="@+id/report_title"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_above="@id/recycler_view"
+            android:layout_above="@id/report_image"
             android:layout_centerHorizontal="true"
             android:paddingBottom="20dp"
-            android:text="Name"
+            android:hint="@string/name"
             android:textSize="20dp"
             android:textColor="@android:color/black"
             android:background="@color/mainColor"
     />
 
-    <android.support.v7.widget.RecyclerView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/recycler_view"
+    <ImageView
+            android:id="@+id/report_image"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            tools:context=".ThumbnailGridFragment"
             android:layout_centerInParent="true"
     />
+
+    <Button
+            android:layout_below="@id/report_image"
+            android:id="@+id/add_report_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Add Image"/>
 
     <EditText android:layout_width="300dp"
               android:layout_height="100dp"
               android:layout_centerHorizontal="true"
-              android:layout_below="@id/recycler_view"
+              android:layout_below="@id/add_report_image_button"
               android:background="@color/infoNumberYellow"
               android:id="@+id/info_body"
-              android:text="Some Infos"
+              android:hint="Some Infos"
               android:layout_margin="2dp"
               android:gravity="top"
               android:textColor="@android:color/darker_gray"
@@ -55,6 +60,7 @@
             android:layout_below="@id/info_body"
             android:layout_centerInParent="true"
             android:layout_margin="20dp"
+            android:id="@+id/submit_button"
     />
 
 
