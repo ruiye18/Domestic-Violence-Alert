@@ -43,4 +43,6 @@
         "Phone: %s \n Email: %s \n\n What Happened: %s"
     </string>
     <string name="sign_out">Sign Out</string>
+    <string name="agree">Agree</string>
+    <string name="disagree">Disagree</string>
 </resources>
