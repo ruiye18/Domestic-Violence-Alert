@@ -63,6 +63,25 @@
             android:id="@+id/submit_button"
     />
 
+    <ToggleButton
+            android:layout_above="@+id/report_title"
+            android:id="@+id/is_criminal_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Criminal Record"
+            android:textOff="No Criminal Record"
+    />
+
+    <ToggleButton
+            android:layout_above="@+id/report_title"
+            android:layout_toRightOf="@+id/is_criminal_toggle"
+            android:id="@+id/agree_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Disagree"
+            android:textOff="Agree"
+    />
+
 
 
 </RelativeLayout>

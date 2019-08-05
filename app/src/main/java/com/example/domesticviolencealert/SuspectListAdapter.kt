@@ -7,7 +7,8 @@ import android.view.ViewGroup
 
 
 class SuspectListAdapter(var suspects: ArrayList<Suspect>,
-    var context: Context?, var listener: SuspectListFragment.OnSuspectSelectedListener?)
+                         var context: Context?,
+                         var listener: SuspectListFragment.OnSuspectSelectedListener?)
     : RecyclerView.Adapter<SuspectViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuspectViewHolder {

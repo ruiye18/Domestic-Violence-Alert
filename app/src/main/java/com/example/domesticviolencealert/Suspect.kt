@@ -11,9 +11,11 @@ import kotlinx.android.parcel.Parcelize
 data class Suspect (var phone: String = "",
                     var email: String = "",
                     var name: String = "",
-                    var proofsImages: ArrayList<String> = arrayListOf(),
+                    var proofsImages: ArrayList<Proof> = arrayListOf(),
+//                    var proofsImages: ArrayList<String> = arrayListOf(),
                     var reports: ArrayList<Report> = arrayListOf(),
-                    var score: Int = 50
+                    var score: Int = 50,
+                    var personalImage: String = ""
 ) : Parcelable {
     @get: Exclude var id = ""
     @ServerTimestamp var lastTouched: Timestamp? = null

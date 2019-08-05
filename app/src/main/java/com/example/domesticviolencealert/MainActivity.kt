@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity(),
 //                Utils.switchFragment(this, SplashFragment())
 //            }
 //        }
+//        auth.addAuthStateListener(authStateListener)
+//
 //    }
 //
 //    override fun onLoginButtonPressed() {
@@ -100,7 +102,9 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings ->{
-                auth.signOut()
+//                auth.signOut()
+//                auth.removeAuthStateListener(authStateListener)
+//                Utils.switchFragment(this, SplashFragment())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -114,9 +118,9 @@ class MainActivity : AppCompatActivity(),
         Utils.switchFragment(this, MainInfoFragment.newInstance(suspect))
     }
 
-    override fun onReportSelected(report: Report) {
-        Log.d(Constants.TAG, "selected: ${report.title}")
-        Utils.switchFragment(this, ReportDetailFragment.newInstance(report))
+    override fun onReportSelected(report: Report, suspect: Suspect) {
+        Log.d(Constants.TAG, "selected: ${report.title} in ${suspect.name}")
+        Utils.switchFragment(this, ReportDetailFragment.newInstance(report, suspect))
     }
 }
 

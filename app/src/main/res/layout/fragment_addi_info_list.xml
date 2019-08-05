@@ -25,10 +25,10 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <ImageView
-                android:id="@+id/suspect_icon"
+                android:id="@+id/personal_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@android:drawable/sym_def_app_icon"
+                app:srcCompat="@android:drawable/ic_menu_add"
                 android:foregroundGravity="center"
                 android:paddingTop="15dp"
         />
@@ -36,7 +36,7 @@
         <Button android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:id="@+id/add_report_button"
-                android:layout_below="@id/suspect_icon"
+                android:layout_below="@id/personal_image"
                 android:text="Add Report"
                 android:background="@color/infoNumberYellow"
                 android:layout_marginTop="10dp"

@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class Report (var title: String = "",
                    var info: String = "",
                    var isCriminal: Boolean = false,
-                   var reportImage: String = ""
+                   var reportImage: String = "",
+                   var agree: Boolean = true
 ) : Parcelable
 
-//TODO: multiple images? + Calender
+//TODO: Calender 

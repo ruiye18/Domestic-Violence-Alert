@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -28,31 +27,32 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import com.google.android.gms.tasks.Continuation
-import com.google.common.math.IntMath.mod
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
-class ReportSuspectFragment : Fragment(),
-    UploadProofTask.UploadConsumer{
+class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
 
     private var currentPhotoPath = ""
-
-    private var proofsUrl = ArrayList<String>()
+        private var proofs = arrayListOf(Proof("",""),Proof("",""),Proof("",""))
+//    private var proofs = ArrayList<String>()
     private var proofsBitmap = ArrayList<Bitmap>()
     private var clickedOnProof = -1
-
+    private var personalImageUri = ""
+    private lateinit var personalImageBitmap: Bitmap
 
     private val storageRef = FirebaseStorage
         .getInstance()
         .reference
         .child("images")
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_report_form, container, false)
+
         view.header_home_button.setOnClickListener {
             Utils.switchFragment(context!!, WelcomeFragment())
         }
@@ -70,15 +70,20 @@ class ReportSuspectFragment : Fragment(),
             showPictureDialog()
         }
 
+        view.personal_image.setOnClickListener{
+            clickedOnProof = 10
+            showPictureDialog()
+        }
+
         view.report_button.setOnClickListener {
             //main info
             val nameText = view.name.text.toString()
             val phoneText = view.phone_number.text.toString()
             val emailText = view.email_address.text.toString()
 
-            //proof images
-            for(bitmap in proofsBitmap) {
-                storageAdd(nameText, phoneText, emailText, bitmap)
+            //proofs
+            for(i in proofsBitmap.indices) {
+                storageAdd(nameText, phoneText, emailText, proofsBitmap[i], i)
             }
         }
 
@@ -86,7 +91,7 @@ class ReportSuspectFragment : Fragment(),
     }
 
 
-    private fun storageAdd(name: String, phone: String, email: String, bitmap: Bitmap?) {
+    private fun storageAdd(name: String, phone: String, email: String, bitmap: Bitmap?, index: Int) {
         val baos = ByteArrayOutputStream()
         bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
@@ -109,15 +114,35 @@ class ReportSuspectFragment : Fragment(),
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result
-                proofsUrl.add(downloadUri.toString())
-                Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
+                when (index) {
+                    0 -> {
+                        proofs[index] = Proof(view!!.proof1_text.text.toString(), downloadUri.toString())
+                        Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
+                    }
+                    1 -> {
+                        proofs[index] = Proof(view!!.proof2_text.text.toString(), downloadUri.toString())
+                        Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
+                    }
+                    2 -> {
+                        proofs[index] = Proof(view!!.proof3_text.text.toString(), downloadUri.toString())
+                        Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
+                    }
+                    10 -> {
+                        personalImageUri = downloadUri.toString()
+                        Log.d(Constants.TAG, "Image download URL succeeded: $downloadUri")
+                    }
+                }
 
-                //TODO: loading ?
-                if (proofsUrl.size == proofsBitmap.size) {
-                    val newSuspect = Suspect(phone, email, name, proofsUrl, ArrayList<Report>(), 50)
+                if (index + 1 == proofsBitmap.size) {
+                    storageAdd(name, phone, email, personalImageBitmap, 10)
+                }
+
+                if (index == 10) {
+                    val newSuspect = Suspect(phone, email, name, proofs, ArrayList<Report>(), 50, personalImageUri)
                     Utils.addSuspect(newSuspect)
                     Utils.switchFragment(context!!, MainInfoFragment.newInstance(newSuspect))
                 }
+                //TODO: loading ?
             } else {
                 Log.d(Constants.TAG, "Image download URL failed")
             }
@@ -133,7 +158,6 @@ class ReportSuspectFragment : Fragment(),
         builder.setPositiveButton("Take Picture") { _, _ ->
             launchCameraIntent()
         }
-
         builder.setNegativeButton("Choose Picture") { _, _ ->
             launchChooseIntent()
         }
@@ -214,19 +238,22 @@ class ReportSuspectFragment : Fragment(),
 
 
     override fun onUploadCompleted(bitmap: Bitmap) {
-        if (clickedOnProof >= proofsBitmap.size) {
-            clickedOnProof = proofsBitmap.size
-            proofsBitmap.add(clickedOnProof, bitmap)
+        if (clickedOnProof == 10) {
+            personalImageBitmap = bitmap
+            view!!.personal_image.setImageBitmap(bitmap)
         } else {
-            proofsBitmap[clickedOnProof] = bitmap
-        }
+            if (clickedOnProof >= proofsBitmap.size) {
+                clickedOnProof = proofsBitmap.size
+                proofsBitmap.add(clickedOnProof, bitmap)
+            } else {
+                proofsBitmap[clickedOnProof] = bitmap
+            }
 
-        when(clickedOnProof) {
-            0 ->  view!!.proof1.setImageBitmap(bitmap)
-            1 ->  view!!.proof2.setImageBitmap(bitmap)
-            2 ->  view!!.proof3.setImageBitmap(bitmap)
+            when (clickedOnProof) {
+                0 -> view!!.proof1.setImageBitmap(bitmap)
+                1 -> view!!.proof2.setImageBitmap(bitmap)
+                2 -> view!!.proof3.setImageBitmap(bitmap)
+            }
         }
     }
-
-//TODO: attach name to proofs
 }

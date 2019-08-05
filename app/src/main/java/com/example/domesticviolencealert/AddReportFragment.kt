@@ -34,7 +34,8 @@ private const val ARG_SUSPECT = "suspect"
 class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
     private var suspect: Suspect? = null
     private var currentPhotoPath = ""
-    lateinit private var currentBitmap : Bitmap
+    private lateinit var currentBitmap : Bitmap
+
 
     private val storageRef = FirebaseStorage
         .getInstance()
@@ -42,8 +43,8 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
         .child("reportImages")
 
 
-    var suspects = ArrayList<Suspect>()
-    val suspectsRef = FirebaseFirestore
+    private var suspects = ArrayList<Suspect>()
+    private val suspectsRef = FirebaseFirestore
         .getInstance()
         .collection(Constants.SUSPECTS_COLLECTION)
 
@@ -55,17 +56,18 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
                 if (exception != null) {
                     Log.e(Constants.TAG, "listen error: $exception")
                     return@addSnapshotListener
-                }
-                for (docChange in snapshot!!.documentChanges) {
-                    val suspect = Suspect.fromSnapshot(docChange.document)
-                    when (docChange.type) {
-                        DocumentChange.Type.ADDED -> {
-                            suspects.add(0, suspect)
-                            Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
-                        }
-                        DocumentChange.Type.MODIFIED -> {
-                            val pos = suspects.indexOfFirst { suspect.id == it.id }
-                            suspects[pos] = suspect
+                } else {
+                    for (docChange in snapshot!!.documentChanges) {
+                        val suspect = Suspect.fromSnapshot(docChange.document)
+                        when (docChange.type) {
+                            DocumentChange.Type.ADDED -> {
+                                suspects.add(0, suspect)
+                                Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
+                            }
+                            DocumentChange.Type.MODIFIED -> {
+                                val pos = suspects.indexOfFirst { suspect.id == it.id }
+                                suspects[pos] = suspect
+                            }
                         }
                     }
                 }
@@ -89,29 +91,28 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
         arguments?.let {
             suspect = it.getParcelable(ARG_SUSPECT)
             loadSuspects()
-            Log.d(Constants.TAG, "Enter add report for ${suspect?.name} in suspects ${suspects.size} ")
+            Log.d(Constants.TAG, "Enter add report for ${suspect?.name}")
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(Constants.TAG, "Enter welcome frag")
         val view = inflater.inflate(R.layout.fragment_add_report, container, false)
-
-        view.add_report_image_button.setOnClickListener {
-            showPictureDialog()
-        }
 
         view.back_button.setOnClickListener {
             Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
         }
 
+        view.add_report_image_button.setOnClickListener {
+            showPictureDialog()
+        }
+
         view.submit_button.setOnClickListener {
             storageAdd()
         }
+
         return view
     }
 
@@ -139,9 +140,9 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
             if (task.isSuccessful) {
                 val downloadUri = task.result
                 Log.d(Constants.TAG, "Report Image download URL succeeded: $downloadUri")
-               addReport(downloadUri.toString())
+                addReport(downloadUri.toString())
             } else {
-                Log.d(Constants.TAG, "Image download URL failed")
+                Log.d(Constants.TAG, "Report Image download URL failed")
             }
         }
     }
@@ -149,19 +150,21 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
     private fun addReport(uri:String) {
         val title = view!!.report_title.text.toString()
         val info = view!!.info_body.text.toString()
-        suspect?.reports?.add(0, Report(title, info, false, uri))
+        val isCriminal = view!!.is_criminal_toggle.isChecked
+        val agree = view!!.agree_toggle.isChecked
+        suspect?.reports?.add(0, Report(title, info, isCriminal, uri, !agree))
         suspectsRef.document(suspect!!.id).set(suspect as Any)
+
         Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
     }
 
     private fun showPictureDialog() {
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Upload Proofs")
-        builder.setMessage("Note: only three proofs are allowed\nPlease choose the most intuitive ones")
+        builder.setTitle("Upload Image for Reports")
+        builder.setMessage("Note: Only one image is allowed for each report\nPlease combine all your evidences into one")
         builder.setPositiveButton("Take Picture") { _, _ ->
             launchCameraIntent()
         }
-
         builder.setNegativeButton("Choose Picture") { _, _ ->
             launchChooseIntent()
         }
@@ -228,14 +231,14 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
     }
 
     private fun sendCameraPhotoToTask() {
-        Log.d(Constants.TAG, "Sending to adapter this photo: $currentPhotoPath from camera")
+        Log.d(Constants.TAG, "Reprot: Sending to task this photo: $currentPhotoPath from camera")
         UploadProofTask(currentPhotoPath, context!!, this).execute()
     }
 
     private fun sendGalleryPhotoToTask(data: Intent?) {
         if (data != null && data.data != null) {
             val location = data.data!!.toString()
-            Log.d(Constants.TAG, "Sending to adapter this photo: $location from gallery")
+            Log.d(Constants.TAG, "Report: Sending to task this photo: $location from gallery")
             UploadProofTask(location, context!!, this).execute()
         }
     }
@@ -243,7 +246,7 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
 
     override fun onUploadCompleted(bitmap: Bitmap) {
         currentBitmap = bitmap
-       view!!.report_image.setImageBitmap(bitmap)
+        view!!.report_image.setImageBitmap(bitmap)
     }
 
 }

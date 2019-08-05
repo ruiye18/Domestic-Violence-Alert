@@ -15,7 +15,7 @@ private const val ARG_SUSPECTS = "suspects"
 class SuspectListFragment : Fragment(){
 
     private var listener: OnSuspectSelectedListener? = null
-    lateinit private var suspects: ArrayList<Suspect>
+    private lateinit var suspects: ArrayList<Suspect>
 
     companion object {
         @JvmStatic
@@ -41,7 +41,6 @@ class SuspectListFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_suspect_list, container, false)
         val adapter = SuspectListAdapter(suspects, context, listener)
 
-        //buttons
         view.home_button.setOnClickListener {
             Utils.switchFragment(context!!, WelcomeFragment())
         }
@@ -49,7 +48,6 @@ class SuspectListFragment : Fragment(){
             Utils.switchFragment(context!!, SearchFragment())
         }
 
-        //recycler view
         val recyclerView = view.report_image
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -71,6 +69,7 @@ class SuspectListFragment : Fragment(){
         super.onDetach()
         listener = null
     }
+
 
     interface OnSuspectSelectedListener {
         fun onSuspectSelected(suspect: Suspect)

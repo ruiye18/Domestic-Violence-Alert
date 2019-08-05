@@ -77,6 +77,7 @@ class UploadProofTask(private val localPath: String,
         return Bitmap.createBitmap(bm, 0, 0, bm.width, bm.height, matrix, true)
     }
 
+
     interface UploadConsumer {
         fun onUploadCompleted(bitmap: Bitmap)
     }

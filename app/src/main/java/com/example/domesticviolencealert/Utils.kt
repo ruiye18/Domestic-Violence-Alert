@@ -8,9 +8,8 @@ import com.google.firebase.firestore.*
 
 
 object Utils {
-    val suspects = ArrayList<Suspect>()
 
-    val suspectsRef = FirebaseFirestore
+    private val suspectsRef = FirebaseFirestore
         .getInstance()
         .collection(Constants.SUSPECTS_COLLECTION)
 
@@ -26,13 +25,13 @@ object Utils {
                 if (exception != null) {
                     Log.e(Constants.TAG, "listen error: $exception")
                     return@addSnapshotListener
-                }
-                for (docChange in snapshot!!.documentChanges) {
-                    val suspect = Suspect.fromSnapshot(docChange.document)
-                    when (docChange.type) {
-                        DocumentChange.Type.ADDED -> {
-                            suspects.add(0, suspect)
-                            Log.d(Constants.TAG, "Added suspect success with size ${suspects.size}")
+                } else {
+                    for (docChange in snapshot!!.documentChanges) {
+                        val suspect = Suspect.fromSnapshot(docChange.document)
+                        when (docChange.type) {
+                            DocumentChange.Type.ADDED -> {
+                                suspects.add(0, suspect)
+                            }
                         }
                     }
                 }
@@ -51,11 +50,6 @@ object Utils {
 
     fun addSuspect(suspect: Suspect) {
         suspectsRef.add(suspect)
-    }
-
-    fun addReport(list: ArrayList<Suspect>, current: Suspect, report: Report) {
-        val pos = list.indexOfFirst { current.id == it.id }
-        Log.d(Constants.TAG, "adding report to position ${pos} and id ${current.id} in ${list.size}")
     }
 
 //    private fun localInit() {

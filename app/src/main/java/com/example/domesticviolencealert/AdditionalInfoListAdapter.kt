@@ -7,13 +7,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.firebase.firestore.*
 
-class AdditionalInfoListAdapter (var context: Context?, var listener: AdditionalInfoListFragment.OnReportSelectedListener?,
+class AdditionalInfoListAdapter (var context: Context?,
+                                 var listener: AdditionalInfoListFragment.OnReportSelectedListener?,
+                                 val suspect: Suspect,
                                  var reports: ArrayList<Report>) : RecyclerView.Adapter<ReportViewHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.row_view_report, parent, false)
-        return ReportViewHolder(view, this)
+        return ReportViewHolder(view, this, context!!)
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
@@ -23,9 +24,7 @@ class AdditionalInfoListAdapter (var context: Context?, var listener: Additional
     override fun getItemCount() = reports.size
 
     fun selectReportAt(adapterPosition: Int) {
-        val doc = reports[adapterPosition]
-        listener?.onReportSelected(doc)
+        val report = reports[adapterPosition]
+        listener?.onReportSelected(report, suspect)
     }
-
-
 }
