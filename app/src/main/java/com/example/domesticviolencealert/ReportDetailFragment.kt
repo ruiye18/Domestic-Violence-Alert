@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_main_info.view.*
 import kotlinx.android.synthetic.main.fragment_report.view.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 private const val ARG_REPORT = "report"
@@ -34,8 +37,9 @@ class ReportDetailFragment : Fragment(), GetProofBitmapsTask.ProofConsumer {
         arguments?.let {
             report = it.getParcelable(ARG_REPORT)
             suspect = it.getParcelable(ARG_SUSPECT)
-            GetProofBitmapsTask(this).execute(report!!.reportImage)
-
+            if (report!!.reportImage.isNotEmpty()) {
+                GetProofBitmapsTask(this).execute(report!!.reportImage)
+            }
             Log.d(Constants.TAG, "Enter report detail frag for ${report?.title} in ${suspect?.name}")
         }
     }
@@ -47,6 +51,7 @@ class ReportDetailFragment : Fragment(), GetProofBitmapsTask.ProofConsumer {
         val view =  inflater.inflate(R.layout.fragment_report, container, false)
         view.report_title.text = report!!.title
         view.info_body.text = report!!.info
+        view.report_date.text = report!!.addDate
 
         view.back_button.setOnClickListener {
             Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
@@ -54,6 +59,8 @@ class ReportDetailFragment : Fragment(), GetProofBitmapsTask.ProofConsumer {
 
         return view
     }
+
+
 
     override fun onProofLoaded(bitmap: Bitmap?) {
         view?.report_image?.setImageBitmap(bitmap)

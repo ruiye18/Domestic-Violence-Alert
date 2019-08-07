@@ -41,6 +41,19 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+
+//    override fun onStart() {
+//        super.onStart()
+//        Log.d(Constants.TAG, "Starting ")
+//        auth.addAuthStateListener(authStateListener)
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        Log.d(Constants.TAG, "Stopping ")
+//
+//        auth.removeAuthStateListener(authStateListener)
+//    }
 //    private fun initializeListeners() {
 //        authStateListener = FirebaseAuth.AuthStateListener { auth: FirebaseAuth ->
 //            val user = auth.currentUser
@@ -53,7 +66,6 @@ class MainActivity : AppCompatActivity(),
 //                Utils.switchFragment(this, SplashFragment())
 //            }
 //        }
-//        auth.addAuthStateListener(authStateListener)
 //
 //    }
 //
@@ -102,9 +114,7 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings ->{
-//                auth.signOut()
-//                auth.removeAuthStateListener(authStateListener)
-//                Utils.switchFragment(this, SplashFragment())
+                auth.signOut()
                 true
             }
             else -> super.onOptionsItemSelected(item)

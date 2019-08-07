@@ -39,7 +39,8 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
     private var proofsBitmap = ArrayList<Bitmap>()
     private var clickedOnProof = -1
     private var personalImageUri = ""
-    private lateinit var personalImageBitmap: Bitmap
+    private var personalImageBitmap: Bitmap? = null
+    private val currentDate = Utils.getCurrentDate()
 
     private val storageRef = FirebaseStorage
         .getInstance()
@@ -81,9 +82,18 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
             val phoneText = view.phone_number.text.toString()
             val emailText = view.email_address.text.toString()
 
-            //proofs
             for(i in proofsBitmap.indices) {
                 storageAdd(nameText, phoneText, emailText, proofsBitmap[i], i)
+            }
+            when (clickedOnProof) {
+                -1 -> {
+                    val newSuspect = Suspect(phoneText, emailText, nameText, proofs, ArrayList<Report>(), 50, personalImageUri, currentDate, currentDate)
+                    Utils.addSuspect(newSuspect)
+                    Utils.switchFragment(context!!, WelcomeFragment())
+                }
+                10 -> {
+                    storageAdd(nameText, phoneText, emailText, personalImageBitmap, 10)
+                }
             }
         }
 
@@ -133,15 +143,14 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
                     }
                 }
 
-                if (index + 1 == proofsBitmap.size) {
-                    storageAdd(name, phone, email, personalImageBitmap, 10)
+                if (index + 1 == proofsBitmap.size || index == 10) {
+
+
+                    val newSuspect = Suspect(phone, email, name, proofs, ArrayList<Report>(), 50, personalImageUri, currentDate, currentDate)
+                    Utils.addSuspect(newSuspect)
+                    Utils.switchFragment(context!!, WelcomeFragment())
                 }
 
-                if (index == 10) {
-                    val newSuspect = Suspect(phone, email, name, proofs, ArrayList<Report>(), 50, personalImageUri)
-                    Utils.addSuspect(newSuspect)
-                    Utils.switchFragment(context!!, MainInfoFragment.newInstance(newSuspect))
-                }
                 //TODO: loading ?
             } else {
                 Log.d(Constants.TAG, "Image download URL failed")
@@ -153,12 +162,12 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
         Log.d(Constants.TAG, "Adding proofs to $clickedOnProof")
 
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Upload Proofs")
-        builder.setMessage("Note: only three proofs are allowed\nPlease choose the most intuitive ones")
-        builder.setPositiveButton("Take Picture") { _, _ ->
+        builder.setTitle(getString(R.string.add_proofs_dialog_title))
+        builder.setMessage(getString(R.string.add_proofs_dialog))
+        builder.setPositiveButton(getString(R.string.pic_pos)) { _, _ ->
             launchCameraIntent()
         }
-        builder.setNegativeButton("Choose Picture") { _, _ ->
+        builder.setNegativeButton(getString(R.string.pic_neg)) { _, _ ->
             launchChooseIntent()
         }
         builder.create().show()

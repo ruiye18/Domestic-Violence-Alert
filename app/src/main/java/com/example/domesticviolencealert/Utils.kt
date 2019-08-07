@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.firebase.firestore.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.ChronoUnit
 
 
 object Utils {
@@ -50,6 +54,28 @@ object Utils {
 
     fun addSuspect(suspect: Suspect) {
         suspectsRef.add(suspect)
+    }
+
+    fun compareDates(date: LocalDate) : Int {
+        val current = LocalDate.now()
+        val passDates = ChronoUnit.DAYS.between(date, current)
+        return passDates.toInt()
+    }
+
+
+    fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+        return currentDate.format(formatter).toString()
+    }
+
+    fun getPassDatesString(passDates : Int, context: Context) : String {
+        when {
+            passDates == 0 -> return context.getString(R.string.today)
+            passDates < 7 ->  return context.getString(R.string.count_dates, passDates.toString())
+            passDates == 7 -> return context.getString(R.string.one_week_ago)
+        }
+        return ""
     }
 
 //    private fun localInit() {

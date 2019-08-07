@@ -20,11 +20,21 @@ import com.google.firebase.firestore.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_add_report.view.*
+import kotlinx.android.synthetic.main.fragment_add_report.view.back_button
+import kotlinx.android.synthetic.main.fragment_add_report.view.info_body
+import kotlinx.android.synthetic.main.fragment_add_report.view.report_image
+import kotlinx.android.synthetic.main.fragment_add_report.view.report_title
+import kotlinx.android.synthetic.main.fragment_report.view.*
 import kotlinx.android.synthetic.main.fragment_report_form.view.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -34,7 +44,7 @@ private const val ARG_SUSPECT = "suspect"
 class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
     private var suspect: Suspect? = null
     private var currentPhotoPath = ""
-    private lateinit var currentBitmap : Bitmap
+    private var currentBitmap : Bitmap? = null
 
 
     private val storageRef = FirebaseStorage
@@ -110,7 +120,11 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
         }
 
         view.submit_button.setOnClickListener {
-            storageAdd()
+            if (currentBitmap == null) {
+                addReport("")
+            } else {
+                storageAdd()
+            }
         }
 
         return view
@@ -148,11 +162,35 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
     }
 
     private fun addReport(uri:String) {
+        suspect?.updateDate = Utils.getCurrentDate()
+
         val title = view!!.report_title.text.toString()
         val info = view!!.info_body.text.toString()
         val isCriminal = view!!.is_criminal_toggle.isChecked
         val agree = view!!.agree_toggle.isChecked
-        suspect?.reports?.add(0, Report(title, info, isCriminal, uri, !agree))
+        val addDate = Utils.getCurrentDate()
+
+
+        Log.d(Constants.TAG, "$isCriminal")
+        if (isCriminal) {
+            suspect?.score = suspect?.score!! + 10
+        }
+        if (!agree) {
+            suspect?.score = suspect?.score!! + 10
+        } else {
+            suspect?.score = suspect?.score!! - 10
+        }
+
+        if (suspect?.score!! < 0) {
+            suspect?.score = 0
+            suspectsRef.document(suspect!!.id).set(suspect as Any)
+        }
+        if (suspect?.score!! > 100) {
+            suspect?.score = 100
+            suspectsRef.document(suspect!!.id).set(suspect as Any)
+        }
+
+        suspect?.reports?.add(0, Report(title, info, isCriminal, uri, !agree, addDate))
         suspectsRef.document(suspect!!.id).set(suspect as Any)
 
         Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
@@ -160,12 +198,12 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
 
     private fun showPictureDialog() {
         val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Upload Image for Reports")
-        builder.setMessage("Note: Only one image is allowed for each report\nPlease combine all your evidences into one")
-        builder.setPositiveButton("Take Picture") { _, _ ->
+        builder.setTitle(getString(R.string.pic_dialog_title))
+        builder.setMessage(getString(R.string.add_report_dialog))
+        builder.setPositiveButton(getString(R.string.pic_pos)) { _, _ ->
             launchCameraIntent()
         }
-        builder.setNegativeButton("Choose Picture") { _, _ ->
+        builder.setNegativeButton(getString(R.string.pic_neg)) { _, _ ->
             launchChooseIntent()
         }
         builder.create().show()

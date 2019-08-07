@@ -45,4 +45,20 @@
     <string name="sign_out">Sign Out</string>
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
+    <string name = "disagree_text">Note: Please upload at least one report before clicking on disagree button</string>
+    <string name="count_dates">%s Days Ago</string>
+    <string name="one_week_ago">One Week Ago</string>
+    <string name="agree_pos">I already upload one</string>
+    <string name="agree_neg">Go add a report</string>
+    <string name="agree_text">Note: Please upload at least one report before clicking on this agree button</string>
+    <string name="pic_dialog_title">Upload Image for Reports</string>
+    <string name="add_report_dialog">Note: Only one image is allowed for each report\nPlease combine all your evidences into one</string>
+    <string name="pic_pos">Take Picture</string>
+    <string name="pic_neg">Choose Picture</string>
+    <string name="add_proofs_dialog_title">Upload Proofs</string>
+    <string name="add_proofs_dialog">Note: only three proofs are allowed\nPlease choose the most intuitive ones</string>
+    <string name="today">Today</string>
+    <string name="latest_update">Latest Update: %s </string>
+    <string name="created_on">Created On: %s</string>
 </resources>
+

@@ -15,11 +15,16 @@ import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.header_home_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.tab_main_info
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.RecyclerView
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.agree_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.disagree_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.personal_image
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.suspect_name
+import kotlinx.android.synthetic.main.fragment_addi_info_list.view.suspect_report_time
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 private const val ARG_SUSPECT = "suspect"
@@ -106,6 +111,29 @@ class AdditionalInfoListFragment : Fragment(), GetProofBitmapsTask.ProofConsumer
         val colorGreen = 255 - suspect?.score!!.toInt() * 2
         view.score_process_color_addi.setBackgroundColor(Color.rgb(255,colorGreen,0))
 
+
+        //update time
+        var date = LocalDate.parse(suspect?.updateDate, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+        var passDates = Utils.compareDates(date)
+        var passDatesString = Utils.getPassDatesString(passDates, context!!)
+        if (passDatesString.isEmpty()) {
+            val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+            view.suspect_update_time.text = getString(R.string.latest_update, date.format(formatter).toString())
+        } else {
+            view.suspect_update_time.text = getString(R.string.latest_update, passDatesString)
+        }
+
+        //report time
+        date = LocalDate.parse(suspect?.reportDate, DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
+        passDates = Utils.compareDates(date)
+        passDatesString = Utils.getPassDatesString(passDates, context!!)
+        if (passDatesString.isEmpty()) {
+            val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+            view.suspect_report_time.text = getString(R.string.created_on, date.format(formatter).toString())
+        } else {
+            view.suspect_report_time.text = getString(R.string.created_on, passDatesString)
+        }
+
         view.add_report_button.setOnClickListener{
             Utils.switchFragment(context!!, AddReportFragment.newInstance(suspect!!))
         }
@@ -114,57 +142,10 @@ class AdditionalInfoListFragment : Fragment(), GetProofBitmapsTask.ProofConsumer
             GetProofBitmapsTask(this).execute(suspect?.personalImage)
         }
 
-        view.agree_button.setOnClickListener {
-            showAgreeDialog()
-        }
-        view.disagree_button.setOnClickListener {
-            showDisagreeDialog()
-        }
-
         return view
     }
 
-    private fun loadScore() {
-        view!!.score_process_text_addi.text = suspect?.score!!.toString()
-        val params = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT)
-        params.weight = suspect?.score!!.toFloat()
-        view!!.score_process_addi.layoutParams = params
-        val colorGreen = 255 - suspect?.score!!.toInt() * 2
-        view!!.score_process_color_addi.setBackgroundColor(Color.rgb(255, colorGreen, 0))
-    }
 
-
-    private fun showDisagreeDialog() {
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Disagree")
-        builder.setMessage("Note: Please upload at least one report before clicking on disagree button")
-        builder.setPositiveButton("I already upload one") { _, _ ->
-            suspect?.score = suspect?.score!! - 10
-            suspectsRef.document(suspect!!.id).set(suspect as Any)
-            loadScore()
-        }
-        builder.setNegativeButton("Go add a report") { _, _ ->
-            Utils.switchFragment(context!!, AddReportFragment.newInstance(suspect!!))
-        }
-        builder.create().show()
-
-    }
-
-    private fun showAgreeDialog() {
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Agree")
-        builder.setMessage("Note: Please upload at least one report before clicking on this agree button")
-        builder.setPositiveButton("I already upload one") { _, _ ->
-            suspect?.score = 10 + suspect?.score!!
-            suspectsRef.document(suspect!!.id).set(suspect as Any)
-            loadScore()
-        }
-        builder.setNegativeButton("Go add a report") { _, _ ->
-            Utils.switchFragment(context!!, AddReportFragment.newInstance(suspect!!))
-        }
-        builder.create().show()
-
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

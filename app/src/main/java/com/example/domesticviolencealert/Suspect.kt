@@ -12,10 +12,11 @@ data class Suspect (var phone: String = "",
                     var email: String = "",
                     var name: String = "",
                     var proofsImages: ArrayList<Proof> = arrayListOf(),
-//                    var proofsImages: ArrayList<String> = arrayListOf(),
                     var reports: ArrayList<Report> = arrayListOf(),
                     var score: Int = 50,
-                    var personalImage: String = ""
+                    var personalImage: String = "",
+                    var reportDate: String ="",
+                    var updateDate: String = ""
 ) : Parcelable {
     @get: Exclude var id = ""
     @ServerTimestamp var lastTouched: Timestamp? = null

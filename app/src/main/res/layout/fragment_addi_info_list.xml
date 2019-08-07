@@ -60,6 +60,18 @@
                     android:padding="5dp"
                     android:textSize="30dp"
             />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/suspect_update_time"
+                    android:text="@string/latest_update"
+            />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/suspect_report_time"
+                    android:text="@string/created_on"
+            />
 
             <LinearLayout
                     android:layout_width="match_parent"
