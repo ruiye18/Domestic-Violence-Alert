@@ -54,6 +54,8 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
     ): View? {
         val view = inflater.inflate(R.layout.fragment_report_form, container, false)
 
+        view.progress_bar.visibility = View.GONE
+
         view.header_home_button.setOnClickListener {
             Utils.switchFragment(context!!, WelcomeFragment())
         }
@@ -82,7 +84,10 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
             val phoneText = view.phone_number.text.toString()
             val emailText = view.email_address.text.toString()
 
+            view.progress_bar.visibility = View.VISIBLE
+
             for(i in proofsBitmap.indices) {
+                Log.d(Constants.TAG, "uploading proofs at #$i")
                 storageAdd(nameText, phoneText, emailText, proofsBitmap[i], i)
             }
             when (clickedOnProof) {
@@ -92,6 +97,7 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
                     Utils.switchFragment(context!!, WelcomeFragment())
                 }
                 10 -> {
+                    Log.d(Constants.TAG, "uploading personal image")
                     storageAdd(nameText, phoneText, emailText, personalImageBitmap, 10)
                 }
             }
@@ -143,15 +149,18 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
                     }
                 }
 
-                if (index + 1 == proofsBitmap.size || index == 10) {
-
-
+                if (index == 10) {
                     val newSuspect = Suspect(phone, email, name, proofs, ArrayList<Report>(), 50, personalImageUri, currentDate, currentDate)
                     Utils.addSuspect(newSuspect)
                     Utils.switchFragment(context!!, WelcomeFragment())
+                } else if (index + 1 == proofsBitmap.size && personalImageBitmap == null) {
+                    val newSuspect = Suspect(phone, email, name, proofs, ArrayList<Report>(), 50, personalImageUri, currentDate, currentDate)
+                    Utils.addSuspect(newSuspect)
+                    Utils.switchFragment(context!!, WelcomeFragment())
+                } else if (index + 1 == proofsBitmap.size && personalImageBitmap != null) {
+                    storageAdd(name, phone, email, personalImageBitmap, 10)
                 }
 
-                //TODO: loading ?
             } else {
                 Log.d(Constants.TAG, "Image download URL failed")
             }

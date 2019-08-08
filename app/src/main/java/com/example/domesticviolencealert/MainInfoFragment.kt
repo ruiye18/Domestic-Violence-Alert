@@ -13,8 +13,6 @@ import android.widget.LinearLayout
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.*
 import kotlinx.android.synthetic.main.fragment_main_info.view.*
-import kotlinx.android.synthetic.main.fragment_main_info.view.agree_button
-import kotlinx.android.synthetic.main.fragment_main_info.view.disagree_button
 import kotlinx.android.synthetic.main.fragment_main_info.view.header_home_button
 import kotlinx.android.synthetic.main.fragment_main_info.view.personal_image
 import kotlinx.android.synthetic.main.fragment_main_info.view.suspect_name
