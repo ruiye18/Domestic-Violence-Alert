@@ -29,7 +29,7 @@
     <uk.co.senab.photoview.PhotoView
             android:id="@+id/report_image"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:padding="8dp"
             android:layout_below="@id/report_title"
             android:layout_centerHorizontal="true"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/report_date"
             android:text="Time"
-            android:layout_below="@+id/report_title"
+            android:layout_below="@+id/report_image"
             android:layout_centerHorizontal="true"
 
     />
