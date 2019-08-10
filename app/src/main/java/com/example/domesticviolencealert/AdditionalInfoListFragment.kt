@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.fragment_addi_info_list.view.tab_main_info
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.fragment_addi_info_list.view.agree_button
-import kotlinx.android.synthetic.main.fragment_addi_info_list.view.disagree_button
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.personal_image
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.suspect_name
 import kotlinx.android.synthetic.main.fragment_addi_info_list.view.suspect_report_time

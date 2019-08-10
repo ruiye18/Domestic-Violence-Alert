@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_add_report.view.info_body
 import kotlinx.android.synthetic.main.fragment_add_report.view.report_image
 import kotlinx.android.synthetic.main.fragment_add_report.view.report_title
 import kotlinx.android.synthetic.main.fragment_report.view.*
-import kotlinx.android.synthetic.main.fragment_report_form.view.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -110,6 +109,7 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_report, container, false)
+        view.progress_bar.visibility = View.GONE
 
         view.back_button.setOnClickListener {
             Utils.switchFragment(context!!, AdditionalInfoListFragment.newInstance(suspect!!))
@@ -123,6 +123,8 @@ class AddReportFragment: Fragment(),  UploadProofTask.UploadConsumer {
             if (currentBitmap == null) {
                 addReport("")
             } else {
+                view.progress_bar.visibility = View.VISIBLE
+
                 storageAdd()
             }
         }
