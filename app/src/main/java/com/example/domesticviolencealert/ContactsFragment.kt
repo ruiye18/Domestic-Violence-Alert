@@ -1,167 +1,185 @@
 package com.example.domesticviolencealert
 
-import android.annotation.SuppressLint
-import android.database.Cursor
-import android.net.Uri
+import android.content.ContentResolver
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.v4.app.Fragment
-import android.support.v4.app.LoaderManager
-import android.support.v4.content.CursorLoader
-import android.support.v4.content.Loader
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.CursorAdapter
-import android.widget.ListView
-import android.widget.SimpleCursorAdapter
-import java.lang.Long.getLong
+import android.widget.TextView
+import android.widget.Toast
+import kotlinx.android.synthetic.main.fragment_contacts.view.*
+import android.provider.ContactsContract.CommonDataKinds.Email
+import android.text.TextUtils
+import com.google.firebase.firestore.*
 
+private const val ARG_CONTACTS = "suspect"
 
-/*
- * Defines an array that contains column names to move from
- * the Cursor to the ListView.
- */
-@SuppressLint("InlinedApi")
-private val FROM_COLUMNS: Array<String> = arrayOf(
-    if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)) {
-        ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-    } else {
-        ContactsContract.Contacts.DISPLAY_NAME
-    }
-)
-/*
- * Defines an array that contains resource ids for the layout views
- * that get the Cursor column contents. The id is pre-defined in
- * the Android framework, so it is prefaced with "android.R.id"
- */
-private val TO_IDS: IntArray = intArrayOf(android.R.id.text1)
+class ContactsFragment : Fragment() {
 
-// The column index for the _ID column
-private const val CONTACT_ID_INDEX: Int = 0
-// The column index for the CONTACT_KEY column
-private const val CONTACT_KEY_INDEX: Int = 1
+    private var allSuspects = ArrayList<Suspect>()
+    private var contactSuspects = ArrayList<Suspect>()
 
-
-class ContactsFragment :
-    Fragment(),
-    LoaderManager.LoaderCallbacks<Cursor>,
-    AdapterView.OnItemClickListener {
-
-    // Define global mutable variables
-    // Define a ListView object
-    lateinit var contactsList: ListView
-    // Define variables for the contact the user selects
-    // The contact's _ID value
-    var contactId: Long = 0
-    // The contact's LOOKUP_KEY
-    var contactKey: String? = null
-    // A content URI for the selected contact
-    var contactUri: Uri? = null
-    // An adapter that binds the result Cursor to the ListView
-    private var cursorAdapter: SimpleCursorAdapter? = null
-
-    @SuppressLint("InlinedApi")
-    private val PROJECTION: Array<out String> = arrayOf(
-        ContactsContract.Contacts._ID,
-        ContactsContract.Contacts.LOOKUP_KEY,
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-        else
-            ContactsContract.Contacts.DISPLAY_NAME
-    )
-
-    // A UI Fragment must inflate its View
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the fragment layout
-        return inflater.inflate(R.layout.contacts_list_view, container, false)
+    companion object {
+        @JvmStatic
+        fun newInstance(allSuspects: ArrayList<Suspect>) =
+            ContactsFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(ARG_CONTACTS, allSuspects)
+                }
+            }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // Gets the ListView from the View list of the parent activity
-        activity?.also {
-            contactsList = it.findViewById<ListView>(R.id.contact_list_view)
-            // Gets a CursorAdapter
-            cursorAdapter = SimpleCursorAdapter(
-                it,
-                R.layout.contacts_list_item,
-                null,
-                FROM_COLUMNS, TO_IDS,
-                0
-            )
-            // Sets the adapter for the ListView
-            contactsList.adapter = cursorAdapter
-        }
-        // Initializes the loader
-        loaderManager.initLoader(0, null, this)
-
-        // Set the item click listener to be the current fragment.
-        contactsList.onItemClickListener = this
-    }
-
-
-    // Defines the text expression
-    @SuppressLint("InlinedApi")
-    private val SELECTION: String =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-            "${ContactsContract.Contacts.DISPLAY_NAME_PRIMARY} LIKE ?"
-        else
-            "${ContactsContract.Contacts.DISPLAY_NAME} LIKE ?"
-
-    // Defines a variable for the search string
-    private val searchString: String = "aaa"
-    // Defines the array to hold values that replace the ?
-    private val selectionArgs = arrayOf<String>(searchString)
-
-    override fun onItemClick(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-        // Get the Cursor
-        val cursor: Cursor? = (parent.adapter as? CursorAdapter)?.cursor?.apply {
-            // Move to the selected contact
-            moveToPosition(position)
-            // Get the _ID value
-            contactId = getLong(CONTACT_ID_INDEX)
-            // Get the selected LOOKUP KEY
-            contactKey = getString(CONTACT_KEY_INDEX)
-            // Create the contact's content Uri
-            contactUri = ContactsContract.Contacts.getLookupUri(contactId, "aaa")
-            /*
-             * You can use contactUri as the content URI for retrieving
-             * the details for a contact.
-             */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            allSuspects = it.getParcelableArrayList(ARG_CONTACTS)
+            Log.d(Constants.TAG, "Enter contacts frag with allSuspects ${allSuspects.size}")
         }
     }
 
-    override fun onCreateLoader(loaderId: Int, args: Bundle?): Loader<Cursor> {
-        /*
-         * Makes search string into pattern and
-         * stores it in the selection array
-         */
-//        selectionArgs[0] = "%$mSearchString%"
-        // Starts the query
-        return activity?.let {
-            return CursorLoader(
-                it,
-                ContactsContract.Contacts.CONTENT_URI,
-                PROJECTION,
-                SELECTION,
-                selectionArgs,
-                null
-            )
-        } ?: throw IllegalStateException()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val view = inflater.inflate(R.layout.fragment_contacts, container, false)
+        val builder = getContacts()
+        view.list_contacts.setText(builder, TextView.BufferType.SPANNABLE)
+
+        view.contact_suspects_button.setOnClickListener {
+            Utils.switchFragment(context!!, SuspectListFragment.newInstance(contactSuspects))
+        }
+
+        view.back_button.setOnClickListener {
+            Utils.switchFragment(context!!, SearchFragment())
+        }
+
+        return view
     }
 
-    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor) {
-        // Put the result Cursor in the adapter for the ListView
-        cursorAdapter?.swapCursor(cursor)
+    private fun getContacts(): SpannableStringBuilder {
+        val builder = SpannableStringBuilder()
+        val resolver = context!!.contentResolver
+        val cursor = resolver.query(
+            ContactsContract.Contacts.CONTENT_URI, null, null, null,
+            null)
+
+        if (cursor!!.count > 0) {
+            while (cursor.moveToNext()) {
+                val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+                val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                val phoneNumber = (cursor.getString(
+                    cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))).toInt()
+
+                var email = ""
+                val emailsCursor = resolver.query(Email.CONTENT_URI, null, Email.CONTACT_ID + " = " + id, null, null)
+                while (emailsCursor.moveToNext()) {
+                    Log.d(Constants.TAG, "Found email")
+                    email = emailsCursor.getString(emailsCursor.getColumnIndex(Email.DATA))
+                    break
+                }
+                emailsCursor.close()
+
+
+                if (phoneNumber > 0) {
+                    val cursorPhone = context!!.contentResolver.query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", arrayOf(id), null)
+
+                    if(cursorPhone!!.count > 0) {
+                        while (cursorPhone.moveToNext()) {
+                            val phoneNumValue = cursorPhone.getString(
+                                cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                            val phone = phoneNumValue.removePrefix("1").removePrefix(" ")
+
+                            val nameText = "Name: $name\n"
+                            val nameSpan = SpannableStringBuilder(nameText)
+                            checkName(name, nameText, nameSpan)
+
+                            val phoneText = "Phone Number: $phone\n"
+                            val phoneSpan = SpannableStringBuilder(phoneText)
+                            checkPhone(phone, phoneText, phoneSpan)
+
+                            val emailText = "Email: $email\n\n"
+                            val emailSpan = SpannableStringBuilder(emailText)
+                            checkEmail(email, emailText, emailSpan)
+
+                            val contactSpan = TextUtils.concat(nameSpan, phoneSpan, emailSpan)
+
+                            builder.append(contactSpan)
+                        }
+                    }
+                    cursorPhone.close()
+                }
+            }
+        } else {
+            Toast.makeText(context!!, "No contact found", Toast.LENGTH_SHORT).show()
+        }
+        cursor.close()
+        return builder
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) {
-        // Delete the reference to the existing Cursor
-        cursorAdapter?.swapCursor(null)
+    private fun checkName(name: String, nameText: String, nameSpan:SpannableStringBuilder)  {
+        for (s in allSuspects) {
+            if (s.name.contains(name) && name.isNotEmpty()) {
+                nameSpan.setSpan(
+                    ForegroundColorSpan(resources.getColor(R.color.helpRed)),
+                    0,
+                    nameText.length,
+                    0
+                )
+
+                if (!contactSuspects.contains(s)){
+                    Log.d(Constants.TAG, "adding ${s.name} to list")
+                    contactSuspects.add(s)
+                }
+            }
+        }
+    }
+
+    private fun checkEmail(email:String, emailText: String, emailSpan: SpannableStringBuilder){
+        for (s in allSuspects ) {
+            if (s.email == email && s.email.isNotEmpty()) {
+                emailSpan.setSpan(
+                    ForegroundColorSpan(resources.getColor(R.color.helpRed)),
+                    0,
+                    emailText.length,
+                    0
+                )
+
+                if (!contactSuspects.contains(s)){
+                    Log.d(Constants.TAG, "adding ${s.email} to list")
+                    contactSuspects.add(s)
+                }
+            }
+        }
+    }
+
+    private fun checkPhone(phone:String, phoneText: String, phoneSpan: SpannableStringBuilder){
+        for (s in allSuspects) {
+            if (s.phone == phone && s.phone.isNotEmpty()) {
+                phoneSpan.setSpan(
+                    ForegroundColorSpan(resources.getColor(R.color.helpRed)),
+                    0,
+                    phoneText.length,
+                    0
+                )
+
+                if (!contactSuspects.contains(s)){
+                    Log.d(Constants.TAG, "adding ${s.phone} to list")
+                    contactSuspects.add(s)
+                }
+            }
+        }
     }
 
 
 }
+

@@ -79,5 +79,13 @@
             android:textSize="20dp"
     />
 
+    <Button
+            android:id="@+id/contacts_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/search_contacts"
+            android:layout_toEndOf="@+id/home_button"
+    />
+
 
 </RelativeLayout>

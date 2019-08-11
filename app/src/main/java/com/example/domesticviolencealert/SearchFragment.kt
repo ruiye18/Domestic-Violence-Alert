@@ -6,6 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.fragment_search.view.home_button
 
@@ -33,8 +37,13 @@ class SearchFragment : Fragment(){
             searchForResults(phone, email, name)
         }
 
+        view.contacts_button.setOnClickListener {
+            Utils.switchFragment(context!!, ContactsFragment.newInstance(allSuspects))
+        }
+
         return view
     }
+
 
     private fun searchForResults(phone: String, email: String, name: String) {
         Log.d(Constants.TAG, "Searching results for $phone and $email and $name in ${allSuspects.size}")
@@ -82,7 +91,7 @@ class SearchFragment : Fragment(){
         val toReturn = ArrayList<Suspect>()
         if (allSuspects.isNotEmpty()) {
             for (s in allSuspects) {
-                if (s.name == name) {
+                if (s.name.contains(name) && name.isNotEmpty()) {
                     toReturn.add(s)
                 }
             }

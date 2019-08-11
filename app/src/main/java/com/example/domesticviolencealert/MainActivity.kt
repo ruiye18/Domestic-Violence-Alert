@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.firestore.*
 
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity(),
             signInAnonymously()
         }
     }
+
 
 
 //    override fun onStart() {
@@ -97,10 +99,18 @@ class MainActivity : AppCompatActivity(),
                     this,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
+            ||
+            ContextCompat
+                .checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_CONTACTS
+                ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_CONTACTS
+                    ),
                 WRITE_EXTERNAL_STORAGE_PERMISSION
             )
         }

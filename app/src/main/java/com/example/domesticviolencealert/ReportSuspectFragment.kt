@@ -81,7 +81,12 @@ class ReportSuspectFragment : Fragment(), UploadProofTask.UploadConsumer{
         view.report_button.setOnClickListener {
             //main info
             val nameText = view.name.text.toString()
-            val phoneText = view.phone_number.text.toString()
+            var phoneTextBuilder = StringBuilder(view.phone_number.text.toString())
+            if (!phoneTextBuilder.contains("-") && phoneTextBuilder.isNotEmpty()) {
+                phoneTextBuilder.insert(3, "-")
+                phoneTextBuilder.insert(7, "-")
+            }
+            val phoneText = phoneTextBuilder.toString()
             val emailText = view.email_address.text.toString()
 
             view.progress_bar.visibility = View.VISIBLE

@@ -60,5 +60,6 @@
     <string name="today">Today</string>
     <string name="latest_update">Latest Update: %s </string>
     <string name="created_on">Created On: %s</string>
+    <string name="search_contacts">Search Contacts</string>
 </resources>
 

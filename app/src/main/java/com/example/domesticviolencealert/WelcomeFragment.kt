@@ -28,6 +28,7 @@ class WelcomeFragment : Fragment(){
             Utils.switchFragment(context!!, HelpFragment())
         }
 
+
         return view
     }
 
