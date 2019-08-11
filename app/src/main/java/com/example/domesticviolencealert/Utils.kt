@@ -62,7 +62,6 @@ object Utils {
         return passDates.toInt()
     }
 
-
     fun getCurrentDate(): String {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)

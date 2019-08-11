@@ -68,14 +68,16 @@ class ContactsFragment : Fragment() {
         val resolver = context!!.contentResolver
         val cursor = resolver.query(
             ContactsContract.Contacts.CONTENT_URI, null, null, null,
-            null)
+            null
+        )
 
         if (cursor!!.count > 0) {
             while (cursor.moveToNext()) {
                 val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                 val phoneNumber = (cursor.getString(
-                    cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))).toInt()
+                    cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
+                )).toInt()
 
                 var email = ""
                 val emailsCursor = resolver.query(Email.CONTENT_URI, null, Email.CONTACT_ID + " = " + id, null, null)
@@ -87,37 +89,45 @@ class ContactsFragment : Fragment() {
                 emailsCursor.close()
 
 
+                var phone = ""
                 if (phoneNumber > 0) {
                     val cursorPhone = context!!.contentResolver.query(
                         ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                        null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", arrayOf(id), null)
+                        null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", arrayOf(id), null
+                    )
 
-                    if(cursorPhone!!.count > 0) {
+                    if (cursorPhone!!.count > 0) {
                         while (cursorPhone.moveToNext()) {
                             val phoneNumValue = cursorPhone.getString(
-                                cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                                cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                            )
 
-                            val phone = phoneNumValue.removePrefix("1").removePrefix(" ")
-
-                            val nameText = "Name: $name\n"
-                            val nameSpan = SpannableStringBuilder(nameText)
-                            checkName(name, nameText, nameSpan)
-
-                            val phoneText = "Phone Number: $phone\n"
-                            val phoneSpan = SpannableStringBuilder(phoneText)
-                            checkPhone(phone, phoneText, phoneSpan)
-
-                            val emailText = "Email: $email\n\n"
-                            val emailSpan = SpannableStringBuilder(emailText)
-                            checkEmail(email, emailText, emailSpan)
-
-                            val contactSpan = TextUtils.concat(nameSpan, phoneSpan, emailSpan)
-
-                            builder.append(contactSpan)
+                            phone = phoneNumValue.removePrefix("1").removePrefix(" ")
                         }
                     }
                     cursorPhone.close()
                 }
+
+                val nameText = "Name: $name\n"
+                val nameSpan = SpannableStringBuilder(nameText)
+                val checkName = checkName(name, nameText, nameSpan)
+
+                val phoneText = "Phone Number: $phone\n"
+                val phoneSpan = SpannableStringBuilder(phoneText)
+                val checkPhone = checkPhone(phone, phoneText, phoneSpan)
+
+                val emailText = "Email: $email\n\n"
+                val emailSpan = SpannableStringBuilder(emailText)
+                val checkEmail = checkEmail(email, emailText, emailSpan)
+
+                if (checkName || checkPhone || checkEmail){
+                    val contactSpan = TextUtils.concat(nameSpan, phoneSpan, emailSpan)
+                    builder.append(contactSpan)
+                } else {
+                    builder.append("")
+                }
+
+
             }
         } else {
             Toast.makeText(context!!, "No contact found", Toast.LENGTH_SHORT).show()
@@ -126,7 +136,7 @@ class ContactsFragment : Fragment() {
         return builder
     }
 
-    private fun checkName(name: String, nameText: String, nameSpan:SpannableStringBuilder)  {
+    private fun checkName(name: String, nameText: String, nameSpan: SpannableStringBuilder) : Boolean{
         for (s in allSuspects) {
             if (s.name.contains(name) && name.isNotEmpty()) {
                 nameSpan.setSpan(
@@ -136,16 +146,18 @@ class ContactsFragment : Fragment() {
                     0
                 )
 
-                if (!contactSuspects.contains(s)){
+                if (!contactSuspects.contains(s)) {
                     Log.d(Constants.TAG, "adding ${s.name} to list")
                     contactSuspects.add(s)
                 }
+                return true
             }
         }
+        return false
     }
 
-    private fun checkEmail(email:String, emailText: String, emailSpan: SpannableStringBuilder){
-        for (s in allSuspects ) {
+    private fun checkEmail(email: String, emailText: String, emailSpan: SpannableStringBuilder): Boolean{
+        for (s in allSuspects) {
             if (s.email == email && s.email.isNotEmpty()) {
                 emailSpan.setSpan(
                     ForegroundColorSpan(resources.getColor(R.color.helpRed)),
@@ -154,15 +166,17 @@ class ContactsFragment : Fragment() {
                     0
                 )
 
-                if (!contactSuspects.contains(s)){
+                if (!contactSuspects.contains(s)) {
                     Log.d(Constants.TAG, "adding ${s.email} to list")
                     contactSuspects.add(s)
                 }
+                return true
             }
         }
+        return false
     }
 
-    private fun checkPhone(phone:String, phoneText: String, phoneSpan: SpannableStringBuilder){
+    private fun checkPhone(phone: String, phoneText: String, phoneSpan: SpannableStringBuilder) : Boolean{
         for (s in allSuspects) {
             if (s.phone == phone && s.phone.isNotEmpty()) {
                 phoneSpan.setSpan(
@@ -172,13 +186,16 @@ class ContactsFragment : Fragment() {
                     0
                 )
 
-                if (!contactSuspects.contains(s)){
+                if (!contactSuspects.contains(s)) {
                     Log.d(Constants.TAG, "adding ${s.phone} to list")
                     contactSuspects.add(s)
                 }
+                return true
             }
         }
+        return false
     }
+
 
 
 }
