@@ -143,5 +143,3 @@ class MainActivity : AppCompatActivity(),
         Utils.switchFragment(this, ReportDetailFragment.newInstance(report, suspect))
     }
 }
-
-//TODO: import address book

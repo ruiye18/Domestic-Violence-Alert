@@ -13,5 +13,3 @@ data class Report (var title: String = "",
                    var agree: Boolean = true,
                    var addDate: String = ""
 ) : Parcelable
-
-//TODO: Calender 
